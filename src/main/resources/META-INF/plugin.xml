@@ -1,0 +1,27 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <id>com.kiber.CompareMaster</id>
+    <name>CompareMaster</name>
+
+    <vendor email="stub.com" url="https://www.stub.com">stub</vendor>
+
+    <description>The description is not set yet. Please wait for plugin implementation</description>
+
+    <depends>com.intellij.modules.platform</depends>
+
+    <!-- Extension points defined by the plugin.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
+    <extensions defaultExtensionNs="com.intellij">
+            <toolWindow id="ECHO Viewer" anchor="right" factoryClass="com.kiber.comparemaster.EchoToolWindow" />
+    </extensions>
+
+    <actions>
+        <action
+                id="Echo.Action"
+                class="com.kiber.comparemaster.EchoAction"
+                text="Echo Echo"
+                description="Show Echo">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+    </actions>
+</idea-plugin>
