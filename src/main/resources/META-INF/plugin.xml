@@ -23,5 +23,12 @@
                 description="Show Echo">
             <add-to-group group-id="ToolsMenu" anchor="last"/>
         </action>
+        <action
+                id="Editor.Action"
+                class="com.kiber.comparemaster.EditorActionHandler"
+                text="Editor Editor"
+                description="Show Editor">
+            <add-to-group group-id="EditorActions" anchor="last"/>
+        </action>
     </actions>
 </idea-plugin>
