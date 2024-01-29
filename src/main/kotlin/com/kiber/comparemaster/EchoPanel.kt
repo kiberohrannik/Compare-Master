@@ -13,29 +13,41 @@ import javax.swing.JPanel
 class EchoPanel(project: Project) : JPanel(BorderLayout()) {
 
     private var echo = "ECHO\n"
-    private var docLinesCounter = 0
 
     init {
-        val editor = EditorFactory.getInstance().createEditor(DocumentImpl(""), project)
+        val leftEditor = createEmptyEditor(project)
+        val rightEditor = createEmptyEditor(project)
 
-        val echoButton = JButton("Echo!")
-        echoButton.addActionListener { showEcho(editor) }
+        val leftPanel = createEditorPanel(leftEditor)
+        val rightPanel = createEditorPanel(rightEditor)
 
-        val echoContentPanel = JPanel()
-            .apply {
-                layout = BoxLayout(this, BoxLayout.PAGE_AXIS)
-                add(editor.component)
-                add(echoButton)
-            }
+        val splitPane = EchoSplitPaneFactory().createSplitPane(leftPanel, rightPanel)
 
-        add(echoContentPanel, BorderLayout.CENTER)
+        add(splitPane, BorderLayout.CENTER)
     }
 
 
+    private fun createEditorPanel(editor: Editor): JPanel {
+        val button = JButton("Echo!")
+        button.addActionListener { showEcho(editor) }
+
+        val panel = JPanel()
+            .apply {
+                layout = BoxLayout(this, BoxLayout.PAGE_AXIS)
+                add(editor.component)
+                add(button)
+            }
+
+        return panel
+    }
+
     private fun showEcho(editor: Editor) {
         runUndoTransparentWriteAction {
-            editor.document.insertString(docLinesCounter, echo)
-            docLinesCounter += echo.length
+            editor.document.insertString(editor.document.text.length, echo)
         }
+    }
+
+    private fun createEmptyEditor(project: Project): Editor {
+        return EditorFactory.getInstance().createEditor(DocumentImpl(""), project)
     }
 }
