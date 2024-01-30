@@ -12,7 +12,9 @@
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
-            <toolWindow id="ECHO Viewer" anchor="right" factoryClass="com.kiber.comparemaster.EchoToolWindow" />
+        <toolWindow id="ECHO Viewer" anchor="right" factoryClass="com.kiber.comparemaster.EchoToolWindow"/>
+        <annotator language="JSON" implementationClass="com.intellij.json.codeinsight.JsonLiteralAnnotator"/>
+        <lang.syntaxHighlighter implementationClass="com.intellij.jsonpath.JsonPathSyntaxHighlighter" language="JSON"/>
     </extensions>
 
     <actions>

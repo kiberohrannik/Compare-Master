@@ -9,14 +9,8 @@ class EchoToolWindow : ToolWindowFactory {
 
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
         val contentFactory = ContentFactory.getInstance()
-
         val content = contentFactory.createContent(EchoPanel(project), "", false)
-
-//        val content = contentFactory.createContent(EchoSplitPane(project), "", false)
-
 
         toolWindow.contentManager.addContent(content)
     }
-
-
 }
