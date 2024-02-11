@@ -3,15 +3,15 @@ package com.kiber.comparemaster
 import com.intellij.json.JsonFileType
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.fileEditor.FileDocumentManager
-import com.intellij.openapi.fileEditor.FileEditor
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.testFramework.LightVirtualFile
+import com.intellij.ui.GuiUtils
 import com.kiber.comparemaster.json.JsonFormatter
 import com.kiber.comparemaster.ui.CompareEditorFactory
+import com.kiber.comparemaster.ui.EditorPanel
 import com.kiber.comparemaster.ui.EditorsButton
 import java.awt.BorderLayout
-import javax.swing.BoxLayout
 import javax.swing.JButton
 import javax.swing.JPanel
 import javax.swing.JSplitPane
@@ -34,29 +34,19 @@ class EditorsPanel(project: Project) : JPanel(BorderLayout()) {
         val rightEditor = editorFactory.createEditor(virtualFile2)
         val echoButton = createEchoButton(virtualFile2)
 
-        val leftPanel = createEditorPanel(leftEditor, listOf(beautifyButton, uglifyButton))
-        val rightPanel = createEditorPanel(rightEditor, listOf(echoButton))
+        val leftPanel = EditorPanel.create(leftEditor, listOf(beautifyButton, uglifyButton))
+        val rightPanel = EditorPanel.create(rightEditor, listOf(echoButton))
 
         val splitPane = JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPanel, rightPanel)
         add(splitPane, BorderLayout.CENTER)
+
+        GuiUtils.replaceJSplitPaneWithIDEASplitter(this)
     }
 
-    private fun createEditorPanel(editor: FileEditor, buttons: List<JButton>): JPanel {
-        return JPanel()
-            .apply {
-                layout = BoxLayout(this, BoxLayout.PAGE_AXIS)
-                add(editor.component)
-                for (button in buttons) {
-                    add(button)
-                }
-            }
-    }
 
     private fun createVirtualFile(name: String, content: String): VirtualFile {
         return LightVirtualFile(name, JsonFileType.INSTANCE, content);
     }
-
-
 
     private fun createEchoButton(virtualFile: VirtualFile): JButton {
         val action = {

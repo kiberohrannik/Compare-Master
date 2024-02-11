@@ -9,11 +9,7 @@ import com.intellij.ui.content.ContentFactory
 class EditorsToolWindowFactory: ToolWindowFactory {
 
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
-        val panel = EditorsPanel(project)
-        GuiUtils.replaceJSplitPaneWithIDEASplitter(panel)
-
-        val content = ContentFactory.getInstance().createContent(panel, "", false)
-
+        val content = ContentFactory.getInstance().createContent(EditorsPanel(project), "", false)
         toolWindow.contentManager.addContent(content)
     }
 }
