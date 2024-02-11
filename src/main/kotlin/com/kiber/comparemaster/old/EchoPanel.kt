@@ -1,4 +1,4 @@
-package com.kiber.comparemaster
+package com.kiber.comparemaster.old
 
 import com.intellij.json.JsonFileType
 import com.intellij.openapi.application.runUndoTransparentWriteAction
@@ -9,6 +9,7 @@ import com.intellij.openapi.fileEditor.FileDocumentManager
 import com.intellij.openapi.fileEditor.impl.text.PsiAwareTextEditorProvider
 import com.intellij.openapi.project.Project
 import com.intellij.testFramework.LightVirtualFile
+import com.kiber.comparemaster.json.JsonFormatter
 import java.awt.BorderLayout
 import javax.swing.BoxLayout
 import javax.swing.JButton
@@ -59,7 +60,7 @@ class EchoPanel(project: Project) : JPanel(BorderLayout()) {
 
         val rightPanel = createEditorPanel(rightEditor, listOf(echoButton))
 
-        val splitPane = EchoSplitPaneFactory().createSplitPane(leftPanel, rightPanel)
+        val splitPane = CompareEditorsSplitPaneFactory().createSplitPane(leftPanel, rightPanel)
 
         add(splitPane, BorderLayout.CENTER)
     }

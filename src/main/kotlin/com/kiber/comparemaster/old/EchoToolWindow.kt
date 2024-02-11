@@ -1,4 +1,4 @@
-package com.kiber.comparemaster
+package com.kiber.comparemaster.old
 
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.ToolWindow

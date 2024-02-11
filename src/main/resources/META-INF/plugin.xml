@@ -12,7 +12,7 @@
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow id="ECHO Viewer" anchor="right" factoryClass="com.kiber.comparemaster.EchoToolWindow"/>
+        <toolWindow id="ECHO Viewer" anchor="right" factoryClass="com.kiber.comparemaster.EditorsToolWindowFactory"/>
         <annotator language="JSON" implementationClass="com.intellij.json.codeinsight.JsonLiteralAnnotator"/>
         <lang.syntaxHighlighter implementationClass="com.intellij.jsonpath.JsonPathSyntaxHighlighter" language="JSON"/>
     </extensions>
@@ -20,14 +20,14 @@
     <actions>
         <action
                 id="Echo.Action"
-                class="com.kiber.comparemaster.EchoAction"
+                class="com.kiber.comparemaster.old.EchoAction"
                 text="Echo Echo"
                 description="Show Echo">
             <add-to-group group-id="ToolsMenu" anchor="last"/>
         </action>
         <action
                 id="Editor.Action"
-                class="com.kiber.comparemaster.EditorActionHandler"
+                class="com.kiber.comparemaster.old.EditorActionHandler"
                 text="Editor Editor"
                 description="Show Editor">
             <add-to-group group-id="EditorActions" anchor="last"/>

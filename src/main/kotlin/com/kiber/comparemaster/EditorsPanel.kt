@@ -1,0 +1,100 @@
+package com.kiber.comparemaster
+
+import com.intellij.json.JsonFileType
+import com.intellij.openapi.editor.Document
+import com.intellij.openapi.fileEditor.FileDocumentManager
+import com.intellij.openapi.fileEditor.FileEditor
+import com.intellij.openapi.project.Project
+import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.testFramework.LightVirtualFile
+import com.kiber.comparemaster.json.JsonFormatter
+import com.kiber.comparemaster.ui.CompareEditorFactory
+import com.kiber.comparemaster.ui.EditorsButton
+import com.kiber.comparemaster.ui.addEditors
+import com.kiber.comparemaster.ui.customize
+import java.awt.BorderLayout
+import javax.swing.BoxLayout
+import javax.swing.JButton
+import javax.swing.JPanel
+import javax.swing.JSplitPane
+
+class EditorsPanel(project: Project) : JPanel(BorderLayout()) {
+
+    private var echo = "ECHO\n"
+    private val jsonFormatter = JsonFormatter()
+    private val editorFactory = CompareEditorFactory(project)
+
+    init {
+        val json = """{"menu":{"header":"SVG Viewer","items":[{"id":"Open"},{"id":"OpenNew","label":"Open New"}]}}"""
+
+        val virtualFile1 = createVirtualFile("Foo.json", json);
+        val leftEditor = editorFactory.createEditor(virtualFile1)
+        val beautifyButton = createBeautifyButton(virtualFile1)
+        val uglifyButton = createUglifyButton(virtualFile1)
+
+        val virtualFile2 = createVirtualFile("Foo2.json", "");
+        val rightEditor = editorFactory.createEditor(virtualFile2)
+        val echoButton = createEchoButton(virtualFile2)
+
+        val leftPanel = createEditorPanel(leftEditor, listOf(beautifyButton, uglifyButton))
+        val rightPanel = createEditorPanel(rightEditor, listOf(echoButton))
+
+        val splitPane = JSplitPane()
+        splitPane.customize()
+        splitPane.addEditors(leftPanel, rightPanel)
+
+        add(splitPane, BorderLayout.CENTER)
+    }
+
+    private fun createEditorPanel(editor: FileEditor, buttons: List<JButton>): JPanel {
+        return JPanel()
+            .apply {
+                layout = BoxLayout(this, BoxLayout.PAGE_AXIS)
+                add(editor.component)
+                for (button in buttons) {
+                    add(button)
+                }
+            }
+    }
+
+    private fun createVirtualFile(name: String, content: String): VirtualFile {
+        return LightVirtualFile(name, JsonFileType.INSTANCE, content);
+    }
+
+
+
+    private fun createEchoButton(virtualFile: VirtualFile): JButton {
+        val action = {
+            val doc = getDoc(virtualFile)!!
+            doc.insertString(doc.text.length, echo)
+        }
+
+        return EditorsButton.createButton("Echo", action)
+
+    }
+
+    private fun createBeautifyButton(virtualFile: VirtualFile): JButton {
+        val action = {
+                val doc = getDoc(virtualFile)!!
+                val prettyJson = jsonFormatter.toPrettyJson(doc.text)
+                doc.replaceString(0, doc.text.length, prettyJson)
+            }
+
+        return EditorsButton.createButton("Beautify", action)
+
+    }
+
+    private fun createUglifyButton(virtualFile: VirtualFile): JButton {
+        val action = {
+            val doc = getDoc(virtualFile)!!
+            val rawJson = jsonFormatter.toRawJson(doc.text)
+            doc.replaceString(0, doc.text.length, rawJson)
+        }
+
+        return EditorsButton.createButton("Uglify", action)
+    }
+
+    private fun getDoc(virtualFile: VirtualFile): Document? {
+        return FileDocumentManager.getInstance().getDocument(virtualFile)
+    }
+}
