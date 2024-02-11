@@ -1,4 +1,4 @@
-package com.kiber.comparemaster
+package com.kiber.comparemaster.json
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.jetbrains.rd.util.string.printToString
