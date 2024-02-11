@@ -10,8 +10,6 @@ import com.intellij.testFramework.LightVirtualFile
 import com.kiber.comparemaster.json.JsonFormatter
 import com.kiber.comparemaster.ui.CompareEditorFactory
 import com.kiber.comparemaster.ui.EditorsButton
-import com.kiber.comparemaster.ui.addEditors
-import com.kiber.comparemaster.ui.customize
 import java.awt.BorderLayout
 import javax.swing.BoxLayout
 import javax.swing.JButton
@@ -39,10 +37,7 @@ class EditorsPanel(project: Project) : JPanel(BorderLayout()) {
         val leftPanel = createEditorPanel(leftEditor, listOf(beautifyButton, uglifyButton))
         val rightPanel = createEditorPanel(rightEditor, listOf(echoButton))
 
-        val splitPane = JSplitPane()
-        splitPane.customize()
-        splitPane.addEditors(leftPanel, rightPanel)
-
+        val splitPane = JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPanel, rightPanel)
         add(splitPane, BorderLayout.CENTER)
     }
 
