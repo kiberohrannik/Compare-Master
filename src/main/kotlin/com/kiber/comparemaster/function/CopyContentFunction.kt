@@ -6,9 +6,9 @@ import com.intellij.openapi.project.Project
 
 class CopyContentFunction(private val project: Project): FilePairFunction {
 
-    override fun apply(doc1: Document, doc2: Document) {
+    override fun apply(left: Document, right: Document) {
         WriteCommandAction.runWriteCommandAction(project) {
-            doc2.setText(doc1.text)
+            right.setText(left.text)
         }
     }
 }
