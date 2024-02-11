@@ -1,12 +1,11 @@
 package com.kiber.comparemaster
 
-import com.intellij.json.JsonFileType
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.fileEditor.FileDocumentManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
-import com.intellij.testFramework.LightVirtualFile
 import com.intellij.ui.GuiUtils
+import com.kiber.comparemaster.content.JsonEditorsFileFactory
 import com.kiber.comparemaster.json.JsonFormatter
 import com.kiber.comparemaster.ui.CompareEditorFactory
 import com.kiber.comparemaster.ui.EditorPanel
@@ -23,16 +22,14 @@ class EditorsPanel(project: Project) : JPanel(BorderLayout()) {
     private val editorFactory = CompareEditorFactory(project)
 
     init {
-        val json = """{"menu":{"header":"SVG Viewer","items":[{"id":"Open"},{"id":"OpenNew","label":"Open New"}]}}"""
+        val editorFiles = JsonEditorsFileFactory.createFilePair()
 
-        val virtualFile1 = createVirtualFile("Foo.json", json);
-        val leftEditor = editorFactory.createEditor(virtualFile1)
-        val beautifyButton = createBeautifyButton(virtualFile1)
-        val uglifyButton = createUglifyButton(virtualFile1)
+        val leftEditor = editorFactory.createEditor(editorFiles.left())
+        val beautifyButton = createBeautifyButton(editorFiles.left())
+        val uglifyButton = createUglifyButton(editorFiles.left())
 
-        val virtualFile2 = createVirtualFile("Foo2.json", "");
-        val rightEditor = editorFactory.createEditor(virtualFile2)
-        val echoButton = createEchoButton(virtualFile2)
+        val rightEditor = editorFactory.createEditor(editorFiles.right())
+        val echoButton = createEchoButton(editorFiles.right())
 
         val leftPanel = EditorPanel.create(leftEditor, listOf(beautifyButton, uglifyButton))
         val rightPanel = EditorPanel.create(rightEditor, listOf(echoButton))
@@ -43,10 +40,6 @@ class EditorsPanel(project: Project) : JPanel(BorderLayout()) {
         GuiUtils.replaceJSplitPaneWithIDEASplitter(this)
     }
 
-
-    private fun createVirtualFile(name: String, content: String): VirtualFile {
-        return LightVirtualFile(name, JsonFileType.INSTANCE, content);
-    }
 
     private fun createEchoButton(virtualFile: VirtualFile): JButton {
         val action = {
