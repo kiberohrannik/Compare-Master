@@ -1,11 +1,14 @@
 package com.kiber.comparemaster
 
+import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.fileEditor.FileDocumentManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.ui.GuiUtils
+import com.kiber.comparemaster.content.FilePair
 import com.kiber.comparemaster.content.JsonEditorsFileFactory
+import com.kiber.comparemaster.function.CopyContentFunction
 import com.kiber.comparemaster.json.JsonFormatter
 import com.kiber.comparemaster.ui.CompareEditorFactory
 import com.kiber.comparemaster.ui.EditorPanel
@@ -15,7 +18,7 @@ import javax.swing.JButton
 import javax.swing.JPanel
 import javax.swing.JSplitPane
 
-class EditorsPanel(project: Project) : JPanel(BorderLayout()) {
+class EditorsPanel(val project: Project) : JPanel(BorderLayout()) {
 
     private var echo = "ECHO\n"
     private val jsonFormatter = JsonFormatter()
@@ -29,34 +32,38 @@ class EditorsPanel(project: Project) : JPanel(BorderLayout()) {
         val uglifyButton = createUglifyButton(editorFiles.left())
 
         val rightEditor = editorFactory.createEditor(editorFiles.right())
-        val echoButton = createEchoButton(editorFiles.right())
+        val copyButton = createCopyButton(editorFiles)
 
         val leftPanel = EditorPanel.create(leftEditor, listOf(beautifyButton, uglifyButton))
-        val rightPanel = EditorPanel.create(rightEditor, listOf(echoButton))
+        val rightPanel = EditorPanel.create(rightEditor, listOf(copyButton))
 
         val splitPane = JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPanel, rightPanel)
         add(splitPane, BorderLayout.CENTER)
 
         GuiUtils.replaceJSplitPaneWithIDEASplitter(this)
+
+        WriteCommandAction.runWriteCommandAction(project) {
+            editorFiles.leftDoc().insertString(0, """{"employee":{"name":"sonoo","salary":56000,"married":true}}""")
+        }
     }
 
 
-    private fun createEchoButton(virtualFile: VirtualFile): JButton {
+    private fun createCopyButton(editorFiles: FilePair): JButton {
         val action = {
-            val doc = getDoc(virtualFile)!!
-            doc.insertString(doc.text.length, echo)
+            CopyContentFunction(project).apply(editorFiles.leftDoc(), editorFiles.rightDoc())
+
         }
 
-        return EditorsButton.createButton("Echo", action)
+        return EditorsButton.createButton("COPY", action)
 
     }
 
     private fun createBeautifyButton(virtualFile: VirtualFile): JButton {
         val action = {
-                val doc = getDoc(virtualFile)!!
-                val prettyJson = jsonFormatter.toPrettyJson(doc.text)
-                doc.replaceString(0, doc.text.length, prettyJson)
-            }
+            val doc = getDoc(virtualFile)!!
+            val prettyJson = jsonFormatter.toPrettyJson(doc.text)
+            doc.replaceString(0, doc.text.length, prettyJson)
+        }
 
         return EditorsButton.createButton("Beautify", action)
 
