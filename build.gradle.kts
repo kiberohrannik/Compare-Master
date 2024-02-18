@@ -6,6 +6,8 @@ plugins {
 
 group = "com.kiber"
 version = "1.0-SNAPSHOT"
+val jsonPatchVersion = "0.4.16"
+val jsonLib = "20231013"
 
 repositories {
     mavenCentral()
@@ -18,6 +20,12 @@ intellij {
     type.set("IC") // Target IDE Platform
 
     plugins.set(listOf("org.jetbrains.kotlin"))
+}
+
+dependencies {
+//    implementation("com.github.java-json-tools:json-patch:jsonPatchVersion")
+    implementation("com.flipkart.zjsonpatch:zjsonpatch:$jsonPatchVersion")
+    implementation("org.json:json:$jsonLib")
 }
 
 tasks {
