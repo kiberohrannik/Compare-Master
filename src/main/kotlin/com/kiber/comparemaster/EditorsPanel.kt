@@ -5,6 +5,7 @@ import com.intellij.openapi.editor.Document
 import com.intellij.openapi.editor.colors.CodeInsightColors
 import com.intellij.openapi.editor.markup.HighlighterTargetArea
 import com.intellij.openapi.fileEditor.FileDocumentManager
+import com.intellij.openapi.fileEditor.FileEditor
 import com.intellij.openapi.fileEditor.TextEditor
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
@@ -12,10 +13,12 @@ import com.intellij.ui.GuiUtils
 import com.kiber.comparemaster.content.FilePair
 import com.kiber.comparemaster.content.JsonEditorsFileFactory
 import com.kiber.comparemaster.function.CopyContentFunction
+import com.kiber.comparemaster.function.ShowDiffFunction
 import com.kiber.comparemaster.json.JsonFormatter
 import com.kiber.comparemaster.ui.CompareEditorFactory
 import com.kiber.comparemaster.ui.EditorPanel
 import com.kiber.comparemaster.ui.EditorsButton
+import org.apache.commons.lang3.tuple.MutablePair
 import java.awt.BorderLayout
 import javax.swing.JButton
 import javax.swing.JPanel
@@ -38,8 +41,11 @@ class EditorsPanel(private val project: Project) : JPanel(BorderLayout()) {
 
         val hButton = createHighlightButton(leftEditor as TextEditor)
 
-        val leftPanel = EditorPanel.create(leftEditor, listOf(beautifyButton, uglifyButton))
-        val rightPanel = EditorPanel.create(rightEditor, listOf(copyButton, hButton))
+        val mutPair: MutablePair<FileEditor, FileEditor> = MutablePair(leftEditor, rightEditor)
+        val diffButton = createDiffButton(editorFiles, mutPair)
+
+        val leftPanel = EditorPanel.create(mutPair.left, listOf(beautifyButton, uglifyButton))
+        val rightPanel = EditorPanel.create(mutPair.right, listOf(copyButton, hButton, diffButton))
 
         val splitPane = JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPanel, rightPanel)
         add(splitPane, BorderLayout.CENTER)
@@ -58,6 +64,14 @@ class EditorsPanel(private val project: Project) : JPanel(BorderLayout()) {
         }
 
         return EditorsButton.createButton("COPY", action)
+    }
+
+    private fun createDiffButton(editorFiles: FilePair, editors: MutablePair<FileEditor, FileEditor>): JButton {
+        val action = {
+            ShowDiffFunction(project).apply(editorFiles.left(), editorFiles.right(), this, editors)
+        }
+
+        return EditorsButton.createButton("DIFF", action)
     }
 
     private fun createHighlightButton(editor: TextEditor): JButton {

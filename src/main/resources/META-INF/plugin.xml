@@ -18,19 +18,19 @@
     </extensions>
 
     <actions>
+        <action
+                id="StackOverflow.AskQuestion.ToolsMenu"
+                class="com.kiber.comparemaster.OpenDiffInEditorAction"
+                text="123123"
+                description="123123">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
 <!--        <action-->
-<!--                id="Echo.Action"-->
-<!--                class="com.kiber.comparemaster.old.EchoAction"-->
-<!--                text="Echo Echo"-->
-<!--                description="Show Echo">-->
+<!--                id="StackOverflow.AskQuestion.ToolsMenu"-->
+<!--                class="com.kiber.comparemaster.AskQuestionAction"-->
+<!--                text="123123"-->
+<!--                description="123123">-->
 <!--            <add-to-group group-id="ToolsMenu" anchor="last"/>-->
-<!--        </action>-->
-<!--        <action-->
-<!--                id="Editor.Action"-->
-<!--                class="com.kiber.comparemaster.old.EditorActionHandler"-->
-<!--                text="Editor Editor"-->
-<!--                description="Show Editor">-->
-<!--            <add-to-group group-id="EditorActions" anchor="last"/>-->
 <!--        </action>-->
     </actions>
 </idea-plugin>
