@@ -1,4 +1,4 @@
-package com.kiber.comparemaster.ui.highlight
+package com.kiber.comparemaster.old.highlight
 
 import com.intellij.openapi.editor.colors.CodeInsightColors
 import com.intellij.openapi.editor.colors.TextAttributesKey

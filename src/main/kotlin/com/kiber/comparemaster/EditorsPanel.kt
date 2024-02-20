@@ -5,20 +5,18 @@ import com.intellij.openapi.editor.Document
 import com.intellij.openapi.editor.colors.CodeInsightColors
 import com.intellij.openapi.editor.markup.HighlighterTargetArea
 import com.intellij.openapi.fileEditor.FileDocumentManager
-import com.intellij.openapi.fileEditor.FileEditor
 import com.intellij.openapi.fileEditor.TextEditor
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.ui.GuiUtils
-import com.kiber.comparemaster.content.FilePair
-import com.kiber.comparemaster.content.JsonEditorsFileFactory
+import com.kiber.comparemaster.content.file.FilePair
+import com.kiber.comparemaster.content.file.JsonEditorsFileFactory
 import com.kiber.comparemaster.function.CopyContentFunction
-import com.kiber.comparemaster.function.ShowDiffFunction
 import com.kiber.comparemaster.json.JsonFormatter
 import com.kiber.comparemaster.ui.CompareEditorFactory
 import com.kiber.comparemaster.ui.EditorPanel
 import com.kiber.comparemaster.ui.EditorsButton
-import org.apache.commons.lang3.tuple.MutablePair
+import com.kiber.comparemaster.ui.diff.SimpleDiffPanel
 import java.awt.BorderLayout
 import javax.swing.JButton
 import javax.swing.JPanel
@@ -39,13 +37,11 @@ class EditorsPanel(private val project: Project) : JPanel(BorderLayout()) {
         val rightEditor = editorFactory.createEditor(editorFiles.right())
         val copyButton = createCopyButton(editorFiles)
 
-        val hButton = createHighlightButton(leftEditor as TextEditor)
+//        val highlightButton = createHighlightButton(leftEditor as TextEditor)
+        val diffButton = createDiffButton(editorFiles)
 
-        val mutPair: MutablePair<FileEditor, FileEditor> = MutablePair(leftEditor, rightEditor)
-        val diffButton = createDiffButton(editorFiles, mutPair)
-
-        val leftPanel = EditorPanel.create(mutPair.left, listOf(beautifyButton, uglifyButton))
-        val rightPanel = EditorPanel.create(mutPair.right, listOf(copyButton, hButton, diffButton))
+        val leftPanel = EditorPanel.create(leftEditor, listOf(beautifyButton, uglifyButton))
+        val rightPanel = EditorPanel.create(rightEditor, listOf(copyButton, diffButton))
 
         val splitPane = JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPanel, rightPanel)
         add(splitPane, BorderLayout.CENTER)
@@ -62,27 +58,23 @@ class EditorsPanel(private val project: Project) : JPanel(BorderLayout()) {
         val action = {
             CopyContentFunction(project).apply(editorFiles.leftDoc(), editorFiles.rightDoc())
         }
-
         return EditorsButton.createButton("COPY", action)
     }
 
-    private fun createDiffButton(editorFiles: FilePair, editors: MutablePair<FileEditor, FileEditor>): JButton {
+    private fun createDiffButton(editorFiles: FilePair): JButton {
         val action = {
-            ShowDiffFunction(project).apply(editorFiles.left(), editorFiles.right(), this, editors)
+            SimpleDiffPanel.showDiff(project, editorFiles.left(), editorFiles.right())
         }
-
-        return EditorsButton.createButton("DIFF", action)
+        return EditorsButton.createButton("Compare", action)
     }
 
-    private fun createHighlightButton(editor: TextEditor): JButton {
-
-        val action: () -> Unit = {
-            editor.editor.markupModel.addRangeHighlighter(
-                CodeInsightColors.MATCHED_BRACE_ATTRIBUTES, 3, 15, 100, HighlighterTargetArea.EXACT_RANGE)
-        }
-
-        return EditorsButton.createButton("Highlight", action)
-    }
+//    private fun createHighlightButton(editor: TextEditor): JButton {
+//        val action: () -> Unit = {
+//            editor.editor.markupModel.addRangeHighlighter(
+//                CodeInsightColors.MATCHED_BRACE_ATTRIBUTES, 3, 15, 100, HighlighterTargetArea.EXACT_RANGE)
+//        }
+//        return EditorsButton.createButton("Highlight", action)
+//    }
 
     private fun createBeautifyButton(virtualFile: VirtualFile): JButton {
         val action = {
@@ -90,7 +82,6 @@ class EditorsPanel(private val project: Project) : JPanel(BorderLayout()) {
             val prettyJson = jsonFormatter.toPrettyJson(doc.text)
             doc.replaceString(0, doc.text.length, prettyJson)
         }
-
         return EditorsButton.createButton("Beautify", action)
 
     }
@@ -101,7 +92,6 @@ class EditorsPanel(private val project: Project) : JPanel(BorderLayout()) {
             val rawJson = jsonFormatter.toRawJson(doc.text)
             doc.replaceString(0, doc.text.length, rawJson)
         }
-
         return EditorsButton.createButton("Uglify", action)
     }
 

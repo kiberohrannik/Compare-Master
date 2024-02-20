@@ -1,4 +1,4 @@
-package com.kiber.comparemaster.content
+package com.kiber.comparemaster.content.file
 
 object JsonEditorsFileFactory : EditorsFileFactory {
 

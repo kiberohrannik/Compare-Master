@@ -1,4 +1,4 @@
-package com.kiber.comparemaster.content
+package com.kiber.comparemaster.content.file
 
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.editor.impl.DocumentImpl

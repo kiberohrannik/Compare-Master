@@ -1,4 +1,4 @@
-package com.kiber.comparemaster
+package com.kiber.comparemaster.old
 
 import com.intellij.ide.BrowserUtil
 import com.intellij.openapi.actionSystem.AnAction

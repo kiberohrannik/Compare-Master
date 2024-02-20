@@ -1,4 +1,4 @@
-package com.kiber.comparemaster.function
+package com.kiber.comparemaster.old
 
 import com.intellij.diff.DiffContentFactory
 import com.intellij.diff.DiffDialogHints
@@ -16,6 +16,7 @@ import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.fileEditor.impl.FileDocumentManagerBase
 import com.intellij.openapi.fileEditor.impl.text.PsiAwareTextEditorProvider
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.ui.WindowWrapper
 import com.intellij.openapi.util.Key
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.vfs.findDocument
@@ -44,61 +45,13 @@ class ShowDiffFunction(private val project: Project) {
         diffPanel.setRequest(request)
         diffPanel.putContextHints(DiffUserDataKeysEx.FORCE_DIFF_TOOL, SimpleDiffTool.INSTANCE)
 
-//        DiffManager.getInstance().showDiff(project, request, DiffDialogHints(WindowWrapper.Mode.MODAL, componentParent))
+        DiffManager.getInstance().showDiff(project, request, DiffDialogHints(WindowWrapper.Mode.MODAL, componentParent))
 
         val diffContent1 = DiffContentFactory.getInstance().create(project, left)
         val diffContent2 = DiffContentFactory.getInstance().create(project, right)
 
         val diffreq = SimpleDiffRequest("compare", diffContent1, diffContent2, "first", "second")
 
-//        val file: DiffVirtualFile = SimpleDiffVirtualFile(diffreq)
-////        FileEditorManager.getInstance(project).openFile(file, true)
-//        file.putUserData(FileDocumentManagerBase.HARD_REF_TO_DOCUMENT_KEY,
-//            com.intellij.openapi.editor.impl.DocumentImpl("")
-//        )
-//        editors.left = PsiAwareTextEditorProvider.getInstance().createEditor(project, file)
-
-        DiffWindow(project, SimpleDiffRequestChain(diffreq), DiffDialogHints.NON_MODAL).show()
+        DiffWindow(project, SimpleDiffRequestChain(diffreq), DiffDialogHints.NON_MODAL)
     }
 }
-
-//class MyDiffRequestPanel : DiffRequestPanel {
-//    private val myProcessor: CacheDiffRequestChainProcessor
-//
-//    constructor (project: Project?, request: DiffRequest) {
-//        myProcessor = CacheDiffRequestChainProcessor(project, SimpleDiffRequestChain(request))
-//        myProcessor.putContextUserData(DiffUserDataKeys.DO_NOT_CHANGE_WINDOW_TITLE, true)
-//
-//        myPanel = object : JPanel(BorderLayout()) {
-//            override fun addNotify() {
-//                super.addNotify()
-//                myProcessor.updateRequest()
-//            }
-//        }
-//        myPanel.add(myProcessor.getComponent())
-//    }
-//
-//    override fun dispose() {
-//        TODO("Not yet implemented")
-//    }
-//
-//    override fun setRequest(request: DiffRequest?) {
-//        setRequest(request, null)
-//    }
-//
-//    override fun setRequest(request: DiffRequest?, identity: Any?) {
-////        myProcessor.setRequest(request, identity)
-//    }
-//
-//    override fun getComponent(): JComponent {
-//        return myPanel
-//    }
-//
-//    override fun getPreferredFocusedComponent(): JComponent? {
-//        return myProcessor.getPreferredFocusedComponent()
-//    }
-//
-//    override fun <T : Any?> putContextHints(p0: Key<T>, p1: T?) {
-//        myProcessor.putContextUserData<T>(key, value)
-//    }
-//}
