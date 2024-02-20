@@ -1,7 +1,6 @@
 package com.kiber.comparemaster.content.parser
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.flipkart.zjsonpatch.JsonDiff
 import com.intellij.openapi.util.TextRange
 
 class JsonDiffSearchEngine {
@@ -11,13 +10,13 @@ class JsonDiffSearchEngine {
     //TODO don't forget to trim json text
     fun findDifferences(leftText: String, rightText: String): Set<TextRange> {
 
-        val patchOperations = JsonPatchMapper.toJsonPatch(leftText, rightText)
+        val patchOperations = JsonPatchOperations.toJsonPatch(leftText, rightText)
 
 
         return setOf()
     }
 
-    private fun findTextRange(op: JsonPatchOperation) : TextRange {
+    private fun findTextRange(op: JsonPatchStep) : TextRange {
         TODO( "Not implmented yet" )
     }
 }

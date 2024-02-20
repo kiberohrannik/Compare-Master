@@ -6,8 +6,11 @@ plugins {
 
 group = "com.kiber"
 version = "1.0-SNAPSHOT"
+
 val jsonPatchVersion = "0.4.16"
-val jsonLib = "20231013"
+val jsonLibVersion = "20231013"
+val kotestVersion = "5.8.0"
+
 
 repositories {
     mavenCentral()
@@ -23,10 +26,10 @@ intellij {
 }
 
 dependencies {
-//    implementation("com.github.java-json-tools:json-patch:jsonPatchVersion")
     implementation("com.flipkart.zjsonpatch:zjsonpatch:$jsonPatchVersion")
-    implementation("org.json:json:$jsonLib")
-//    implementation("org.bitbucket.cowwoc:diff-match-patch:1.2")
+    implementation("org.json:json:$jsonLibVersion")
+
+    testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
 }
 
 tasks {
@@ -37,6 +40,10 @@ tasks {
     }
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         kotlinOptions.jvmTarget = "17"
+    }
+
+    withType<Test>().configureEach {
+        useJUnitPlatform()
     }
 
     patchPluginXml {

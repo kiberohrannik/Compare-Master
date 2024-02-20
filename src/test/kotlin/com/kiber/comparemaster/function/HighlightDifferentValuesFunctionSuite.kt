@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.flipkart.zjsonpatch.JsonDiff
 import com.flipkart.zjsonpatch.JsonPatch
-import com.kiber.comparemaster.content.parser.JsonPatchMapper
+import com.kiber.comparemaster.content.parser.JsonPatchOperations
 import org.junit.Test
 import java.io.ByteArrayInputStream
 import java.util.*
@@ -85,7 +85,7 @@ class HighlightDifferentValuesFunctionSuite {
                 "}"
         val json2 = "{\"employee\":{\"name\":\"sonoo\",\"salary\":56000,\"married\":true, \"trash\": [1, 2]}}"
 
-        val operations = JsonPatchMapper.toJsonPatch(json1, json2)
+        val operations = JsonPatchOperations.toJsonPatch(mapper.readTree(json1), mapper.readTree(json2))
         println(operations)
 
         val replaceValuesOperations = operations.filter {
@@ -116,7 +116,7 @@ class HighlightDifferentValuesFunctionSuite {
                 "}"
         val json2 = "{\"employee\":{\"name\":\"sonoo\",\"salary\":56000,\"married\":true, \"trash\": [1, 2]}}"
 
-        val operations = JsonPatchMapper.toJsonPatch(json1, json2)
+        val operations = JsonPatchOperations.toJsonPatch(mapper.readTree(json1), mapper.readTree(json2))
         println(operations)
 
         val replaceValuesOperations = operations.filter {
@@ -193,7 +193,7 @@ class HighlightDifferentValuesFunctionSuite {
                     "}"
             val json2 = "{\"employee\":{\"name\":\"sonoo\",\"salary\":56000,\"married\":true}}"
 
-            val operations = JsonPatchMapper.toJsonPatch(json1, json2)
+            val operations = JsonPatchOperations.toJsonPatch(mapper.readTree(json1), mapper.readTree(json2))
             println(operations)
 
             operations.forEach {

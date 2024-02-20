@@ -1,8 +1,12 @@
 package com.kiber.comparemaster.function
 
-import com.intellij.openapi.editor.Document
+import com.intellij.openapi.project.Project
+import com.kiber.comparemaster.content.file.EFileTypes
+import com.kiber.comparemaster.content.file.FilePair
 
-fun interface FilePairFunction {
+interface FilePairFunction {
 
-    fun apply(left: Document, right: Document): Unit
+    fun apply(filePair: FilePair, project: Project)
+
+    fun supports(fileType: EFileTypes): Boolean = false
 }

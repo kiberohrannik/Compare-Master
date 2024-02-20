@@ -1,18 +1,21 @@
 package com.kiber.comparemaster.function
 
+import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.project.Project
 import com.kiber.comparemaster.content.file.EFileTypes
 import com.kiber.comparemaster.content.file.FilePair
-import com.kiber.comparemaster.function.internal.ContentOperations
 
-
-class CopyContentFunction : FilePairFunction {
+class CopyPresentValuesJsonFunction: FilePairFunction {
 
     override fun apply(filePair: FilePair, project: Project) {
-        ContentOperations.setText(filePair.leftDoc().text, filePair.right(), project)
+
+
+        WriteCommandAction.runWriteCommandAction(project) {
+            filePair.rightDoc().setText(filePair.leftDoc().text)
+        }
     }
 
     override fun supports(fileType: EFileTypes): Boolean {
-        return true
+        return fileType == EFileTypes.JSON
     }
 }

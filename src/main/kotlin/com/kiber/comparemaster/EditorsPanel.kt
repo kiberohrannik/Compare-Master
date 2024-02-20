@@ -56,7 +56,7 @@ class EditorsPanel(private val project: Project) : JPanel(BorderLayout()) {
 
     private fun createCopyButton(editorFiles: FilePair): JButton {
         val action = {
-            CopyContentFunction(project).apply(editorFiles.leftDoc(), editorFiles.rightDoc())
+            CopyContentFunction(project).apply(editorFiles)
         }
         return EditorsButton.createButton("COPY", action)
     }
