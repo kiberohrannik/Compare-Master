@@ -2,10 +2,7 @@ package com.kiber.comparemaster
 
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.editor.Document
-import com.intellij.openapi.editor.colors.CodeInsightColors
-import com.intellij.openapi.editor.markup.HighlighterTargetArea
 import com.intellij.openapi.fileEditor.FileDocumentManager
-import com.intellij.openapi.fileEditor.TextEditor
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.ui.GuiUtils
@@ -37,7 +34,6 @@ class EditorsPanel(private val project: Project) : JPanel(BorderLayout()) {
         val rightEditor = editorFactory.createEditor(editorFiles.right())
         val copyButton = createCopyButton(editorFiles)
 
-//        val highlightButton = createHighlightButton(leftEditor as TextEditor)
         val diffButton = createDiffButton(editorFiles)
 
         val leftPanel = EditorPanel.create(leftEditor, listOf(beautifyButton, uglifyButton))
@@ -56,7 +52,7 @@ class EditorsPanel(private val project: Project) : JPanel(BorderLayout()) {
 
     private fun createCopyButton(editorFiles: FilePair): JButton {
         val action = {
-            CopyContentFunction(project).apply(editorFiles)
+            CopyContentFunction().apply(editorFiles, project)
         }
         return EditorsButton.createButton("COPY", action)
     }
@@ -67,14 +63,6 @@ class EditorsPanel(private val project: Project) : JPanel(BorderLayout()) {
         }
         return EditorsButton.createButton("Compare", action)
     }
-
-//    private fun createHighlightButton(editor: TextEditor): JButton {
-//        val action: () -> Unit = {
-//            editor.editor.markupModel.addRangeHighlighter(
-//                CodeInsightColors.MATCHED_BRACE_ATTRIBUTES, 3, 15, 100, HighlighterTargetArea.EXACT_RANGE)
-//        }
-//        return EditorsButton.createButton("Highlight", action)
-//    }
 
     private fun createBeautifyButton(virtualFile: VirtualFile): JButton {
         val action = {
