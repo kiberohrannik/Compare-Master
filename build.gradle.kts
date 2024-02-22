@@ -10,7 +10,7 @@ version = "1.0-SNAPSHOT"
 val jsonPatchVersion = "0.4.16"
 val jsonLibVersion = "20231013"
 val kotestVersion = "5.8.0"
-
+val kotlinVersion = "1.9.21"
 
 repositories {
     mavenCentral()
@@ -28,6 +28,8 @@ intellij {
 dependencies {
     implementation("com.flipkart.zjsonpatch:zjsonpatch:$jsonPatchVersion")
     implementation("org.json:json:$jsonLibVersion")
+    compileOnly("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
+
 
     testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
 }

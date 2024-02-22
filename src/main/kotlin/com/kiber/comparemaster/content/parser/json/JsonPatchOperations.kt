@@ -18,6 +18,6 @@ object JsonPatchOperations {
             .forType(object : TypeReference<List<JsonPatchStep>>() {})
             .readValue<List<JsonPatchStep>>(patchJson)
 
-        return StepsOperation(steps)
+        return StepsOperation(steps, sourceNode)
     }
 }
