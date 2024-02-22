@@ -8,7 +8,7 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.ui.GuiUtils
 import com.kiber.comparemaster.content.file.FilePair
 import com.kiber.comparemaster.content.file.JsonEditorsFileFactory
-import com.kiber.comparemaster.function.CopyContentFunction
+import com.kiber.comparemaster.function.ReplaceOnlyPresentValuesFunction
 import com.kiber.comparemaster.json.JsonFormatter
 import com.kiber.comparemaster.ui.CompareEditorFactory
 import com.kiber.comparemaster.ui.EditorPanel
@@ -28,11 +28,11 @@ class EditorsPanel(private val project: Project) : JPanel(BorderLayout()) {
         val editorFiles = JsonEditorsFileFactory.createFilePair()
 
         val leftEditor = editorFactory.createEditor(editorFiles.left())
-        val beautifyButton = createBeautifyButton(editorFiles.left())
+        val beautifyButton = createBeautifyButton(editorFiles)
         val uglifyButton = createUglifyButton(editorFiles.left())
 
         val rightEditor = editorFactory.createEditor(editorFiles.right())
-        val copyButton = createCopyButton(editorFiles)
+        val copyButton = createReplaceValuesButton(editorFiles)
 
         val diffButton = createDiffButton(editorFiles)
 
@@ -50,11 +50,13 @@ class EditorsPanel(private val project: Project) : JPanel(BorderLayout()) {
     }
 
 
-    private fun createCopyButton(editorFiles: FilePair): JButton {
+    private fun createReplaceValuesButton(editorFiles: FilePair): JButton {
         val action = {
-            CopyContentFunction().apply(editorFiles, project)
+            ReplaceOnlyPresentValuesFunction().apply(editorFiles, project)
+            beautify(editorFiles.leftDoc())
+            beautify(editorFiles.rightDoc())
         }
-        return EditorsButton.createButton("COPY", action)
+        return EditorsButton.createButton("REPLACE (present values)", action)
     }
 
     private fun createDiffButton(editorFiles: FilePair): JButton {
@@ -64,14 +66,17 @@ class EditorsPanel(private val project: Project) : JPanel(BorderLayout()) {
         return EditorsButton.createButton("Compare", action)
     }
 
-    private fun createBeautifyButton(virtualFile: VirtualFile): JButton {
+    private fun createBeautifyButton(editorFiles: FilePair): JButton {
         val action = {
-            val doc = getDoc(virtualFile)!!
-            val prettyJson = jsonFormatter.toPrettyJson(doc.text)
-            doc.replaceString(0, doc.text.length, prettyJson)
+            beautify(editorFiles.leftDoc())
+            beautify(editorFiles.rightDoc())
         }
         return EditorsButton.createButton("Beautify", action)
+    }
 
+    private fun beautify(document: Document) {
+        val prettyJson = jsonFormatter.toPrettyJson(document.text)
+        document.replaceString(0, document.text.length, prettyJson)
     }
 
     private fun createUglifyButton(virtualFile: VirtualFile): JButton {
