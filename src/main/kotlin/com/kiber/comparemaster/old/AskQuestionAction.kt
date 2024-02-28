@@ -8,4 +8,10 @@ class AskQuestionAction : AnAction() {
     override fun actionPerformed(e: AnActionEvent) {
         BrowserUtil.browse("https://stackoverflow.com/questions/ask")
     }
+
+    override fun displayTextInToolbar(): Boolean {
+        return true
+    }
+
+
 }
