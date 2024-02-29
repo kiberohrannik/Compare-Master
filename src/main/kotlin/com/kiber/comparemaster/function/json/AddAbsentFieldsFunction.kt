@@ -1,4 +1,4 @@
-package com.kiber.comparemaster.function
+package com.kiber.comparemaster.function.json
 
 import com.intellij.openapi.project.Project
 import com.kiber.comparemaster.content.file.FilePair
@@ -6,7 +6,7 @@ import com.kiber.comparemaster.content.parser.json.FilterStepsOperation
 import com.kiber.comparemaster.content.parser.json.JsonPatchOperations
 import com.kiber.comparemaster.function.internal.ContentOperations
 
-class ReplaceOnlyPresentValuesFunction: JsonFilePairFunction {
+class AddAbsentFieldsFunction: JsonFilePairFunction {
 
     override fun apply(filePair: FilePair, project: Project) {
         //left is target
@@ -16,7 +16,7 @@ class ReplaceOnlyPresentValuesFunction: JsonFilePairFunction {
         val target = filePair.leftDoc().text
 
         val result = JsonPatchOperations.toJsonPatch(source, target)
-            .apply(FilterStepsOperation.filterOnlyPresentValues())
+            .apply(FilterStepsOperation.filterOnlyAbsentValues())
             .patchJson()
 
         ContentOperations.setText(result, filePair.right(), project)

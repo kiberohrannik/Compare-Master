@@ -1,4 +1,4 @@
-package com.kiber.comparemaster.function
+package com.kiber.comparemaster.function.json
 
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
@@ -7,17 +7,17 @@ import com.kiber.comparemaster.content.file.FilePair
 import com.kiber.comparemaster.function.internal.ContentOperations
 import com.kiber.comparemaster.json.JsonFormatter
 
-object FormatJsonFunction: JsonFilePairFunction {
+object InlineJsonFunction: JsonFilePairFunction {
 
     override fun apply(filePair: FilePair, project: Project) {
-        format(filePair.left(), project)
-        format(filePair.right(), project)
+        inline(filePair.left(), project)
+        inline(filePair.right(), project)
     }
 
 
-    private fun format(file: VirtualFile, project: Project) {
+    private fun inline(file: VirtualFile, project: Project) {
         //TODO null handling
-        val prettyJson = JsonFormatter.toPrettyJson(file.findDocument()!!.text)
+        val prettyJson = JsonFormatter.toRawJson(file.findDocument()!!.text)
         ContentOperations.setText(prettyJson, file, project)
     }
 }

@@ -7,13 +7,23 @@ import com.fasterxml.jackson.databind.JsonNode
 object FilterStepsOperation {
 
     fun filterOnlyPresentValues(): (Collection<JsonPatchStep>, JsonNode) -> StepsOperation =
-    { patchSteps, sourceNode ->
-        StepsOperation(
-            patchSteps.filter {
-                it.op == "replace" || it.path.matches(Regex(".*/\\d$"))
-            },
-            sourceNode
-        )
-    }
+        { patchSteps, sourceNode ->
+            StepsOperation(
+                patchSteps.filter {
+                    it.op == "replace" || it.path.matches(Regex(".*/\\d$"))
+                },
+                sourceNode
+            )
+        }
+
+    fun filterOnlyAbsentValues(): (Collection<JsonPatchStep>, JsonNode) -> StepsOperation =
+        { patchSteps, sourceNode ->
+            StepsOperation(
+                patchSteps.filter {
+                    it.op == "add" || it.path.matches(Regex(".*/\\d$"))
+                },
+                sourceNode
+            )
+        }
 }
 
