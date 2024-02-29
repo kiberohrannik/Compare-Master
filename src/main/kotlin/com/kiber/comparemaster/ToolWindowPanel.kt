@@ -3,7 +3,6 @@ package com.kiber.comparemaster
 import com.intellij.icons.AllIcons
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.util.IconLoader
 import com.intellij.ui.GuiUtils
 import com.kiber.comparemaster.action.FilePairAction
 import com.kiber.comparemaster.content.file.FilePair
@@ -18,10 +17,7 @@ import com.kiber.comparemaster.ui.CompareEditorFactory
 import com.kiber.comparemaster.ui.EditorPanel
 import com.kiber.comparemaster.ui.EditorsToolbarFactory
 import com.kiber.comparemaster.ui.IconManager
-import org.apache.batik.ext.awt.g2d.DefaultGraphics2D
 import java.awt.BorderLayout
-import java.awt.Graphics
-import java.awt.Graphics2D
 import javax.swing.JPanel
 import javax.swing.JSplitPane
 
@@ -58,7 +54,6 @@ class ToolWindowPanel(project: Project) : JPanel(BorderLayout()) {
 
         val replaceOnlyValuesAction = FilePairAction(
             hint = "Replace existing values from left to right",
-//            icon = AllIcons.Gutter.SuggestedRefactoringBulb,
             icon = IconManager.replaceOnlyValues,
             function = ReplaceOnlyPresentValuesFunction(),
             applyFinally = { filePair -> FormatJsonFunction.apply(filePair, project) }
@@ -73,14 +68,12 @@ class ToolWindowPanel(project: Project) : JPanel(BorderLayout()) {
 
         val formatJsonFunction = FilePairAction(
             hint = "Format",
-//            icon = AllIcons.FileTypes.Json,
             icon = IconManager.formatText,
             function = FormatJsonFunction,
         )
 
         val inlineJsonFunction = FilePairAction(
             hint = "Inline",
-//            icon = AllIcons.FileTypes.Text,
             icon = IconManager.inlineText,
             function = InlineJsonFunction,
         )
