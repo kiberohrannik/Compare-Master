@@ -1,5 +1,9 @@
 package com.kiber.comparemaster
 
+import com.intellij.execution.runToolbar.RunToolbarMoreActionGroup
+import com.intellij.openapi.actionSystem.ActionGroup
+import com.intellij.openapi.actionSystem.ActionManager
+import com.intellij.openapi.actionSystem.ActionPlaces
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.fileEditor.FileDocumentManager
@@ -10,6 +14,7 @@ import com.kiber.comparemaster.content.file.FilePair
 import com.kiber.comparemaster.content.file.JsonEditorsFileFactory
 import com.kiber.comparemaster.function.ReplaceOnlyPresentValuesFunction
 import com.kiber.comparemaster.json.JsonFormatter
+import com.kiber.comparemaster.old.AskQuestionAction
 import com.kiber.comparemaster.ui.CompareEditorFactory
 import com.kiber.comparemaster.ui.EditorPanel
 import com.kiber.comparemaster.ui.EditorsButton
@@ -18,6 +23,7 @@ import java.awt.BorderLayout
 import javax.swing.JButton
 import javax.swing.JPanel
 import javax.swing.JSplitPane
+import javax.swing.SwingConstants
 
 class EditorsPanel(private val project: Project) : JPanel(BorderLayout()) {
 
@@ -47,6 +53,23 @@ class EditorsPanel(private val project: Project) : JPanel(BorderLayout()) {
         WriteCommandAction.runWriteCommandAction(project) {
             editorFiles.leftDoc().insertString(0, """{"employee":{"name":"sonoo","salary":56000,"married":true}}""")
         }
+
+        //***************************************************************
+        val group = RunToolbarMoreActionGroup()
+        group.add(AskQuestionAction())
+        group.addSeparator()
+        group.add(AskQuestionAction())
+
+        val group2 = ActionManager.getInstance().getAction("ProblemsView.ToolWindow.Toolbar") as ActionGroup
+//        val toolbar = ActionManager.getInstance().createActionToolbar(ActionPlaces.PROJECT_VIEW_TOOLBAR, group2, false);
+        val toolbar = ActionManager.getInstance().createActionToolbar(ActionPlaces.PROJECT_VIEW_TOOLBAR, group, false);
+        toolbar.setOrientation(SwingConstants.VERTICAL)
+        toolbar.targetComponent = this
+
+        add(BorderLayout.WEST, toolbar.component)
+        //***************************************************************
+
+
     }
 
 

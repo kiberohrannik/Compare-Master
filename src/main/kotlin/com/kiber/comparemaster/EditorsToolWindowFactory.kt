@@ -4,6 +4,8 @@ import com.intellij.analysis.problemsView.toolWindow.ProblemsViewPanel
 import com.intellij.analysis.problemsView.toolWindow.ProblemsViewState
 import com.intellij.execution.runToolbar.RunToolbarMoreActionGroup
 import com.intellij.execution.runners.RunTab
+import com.intellij.openapi.actionSystem.ActionManager
+import com.intellij.openapi.actionSystem.ActionPlaces
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowFactory
@@ -56,6 +58,7 @@ class EditorsToolWindowFactory: ToolWindowFactory {
 
         toolWindow.contentManager.addContent(ContentFactory.getInstance().createContent(example, "23444", false))
 //        panel.add(toolbar.component)
+
 
         //*************************************************
 
