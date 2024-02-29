@@ -8,23 +8,20 @@ import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.project.Project
 import com.intellij.ui.GuiUtils
 import com.kiber.comparemaster.action.FilePairAction
-import com.kiber.comparemaster.action.FormatJsonContentAction
-import com.kiber.comparemaster.action.InlineJsonContentAction
 import com.kiber.comparemaster.content.file.FilePair
 import com.kiber.comparemaster.content.file.JsonEditorsFileFactory
 import com.kiber.comparemaster.function.CopyContentFunction
+import com.kiber.comparemaster.function.FormatJsonFunction
+import com.kiber.comparemaster.function.InlineJsonFunction
 import com.kiber.comparemaster.function.ReplaceOnlyPresentValuesFunction
 import com.kiber.comparemaster.ui.CompareEditorFactory
 import com.kiber.comparemaster.ui.EditorPanel
-import com.kiber.comparemaster.ui.EditorsButton
-import com.kiber.comparemaster.ui.diff.SimpleDiffPanel
 import java.awt.BorderLayout
-import javax.swing.JButton
 import javax.swing.JPanel
 import javax.swing.JSplitPane
 import javax.swing.SwingConstants
 
-class EditorsPanel(private val project: Project) : JPanel(BorderLayout()) {
+class ToolWindowPanel(project: Project) : JPanel(BorderLayout()) {
 
     private val editorFactory = CompareEditorFactory(project)
 
@@ -34,10 +31,8 @@ class EditorsPanel(private val project: Project) : JPanel(BorderLayout()) {
         val leftEditor = editorFactory.createEditor(editorFiles.left())
         val rightEditor = editorFactory.createEditor(editorFiles.right())
 
-        val diffButton = createDiffButton(editorFiles)
-
-        val leftPanel = EditorPanel.create(leftEditor, listOf())
-        val rightPanel = EditorPanel.create(rightEditor, listOf(diffButton))
+        val leftPanel = EditorPanel.create(leftEditor)
+        val rightPanel = EditorPanel.create(rightEditor)
 
         val splitPane = JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPanel, rightPanel)
         add(splitPane, BorderLayout.CENTER)
@@ -58,31 +53,36 @@ class EditorsPanel(private val project: Project) : JPanel(BorderLayout()) {
         val replaceOnlyValuesAction = FilePairAction(
             hint = "Replace existing values from left to right",
             icon = AllIcons.Nodes.Alias,
-            function = ReplaceOnlyPresentValuesFunction()
+            function = ReplaceOnlyPresentValuesFunction(),
+            applyFinally = { filePair -> FormatJsonFunction.apply(filePair, project) }
+        )
+
+        val formatJsonFunction = FilePairAction(
+            hint = "Format",
+            icon = AllIcons.Actions.EnableNewUi,
+            function = FormatJsonFunction,
+        )
+
+        val inlineJsonFunction = FilePairAction(
+            hint = "Inline",
+            icon = AllIcons.Actions.EnableNewUiSelected,
+            function = InlineJsonFunction,
         )
 
         val group = RunToolbarMoreActionGroup()
         group.add(copyAction)
         group.addSeparator()
-        group.add(FormatJsonContentAction())
+        group.add(formatJsonFunction)
         group.addSeparator()
-        group.add(InlineJsonContentAction())
+        group.add(inlineJsonFunction)
         group.addSeparator()
         group.add(replaceOnlyValuesAction)
 
-        val toolbar = ActionManager.getInstance().createActionToolbar(ActionPlaces.PROJECT_VIEW_TOOLBAR, group, false);
+        val toolbar = ActionManager.getInstance().createActionToolbar(ActionPlaces.PROJECT_VIEW_TOOLBAR, group, false)
         toolbar.setOrientation(SwingConstants.VERTICAL)
         toolbar.targetComponent = this
 
         add(BorderLayout.WEST, toolbar.component)
         //***************************************************************
-    }
-
-
-    private fun createDiffButton(editorFiles: FilePair): JButton {
-        val action = {
-            SimpleDiffPanel.showDiff(project, editorFiles.left(), editorFiles.right())
-        }
-        return EditorsButton.createButton("Compare", action)
     }
 }

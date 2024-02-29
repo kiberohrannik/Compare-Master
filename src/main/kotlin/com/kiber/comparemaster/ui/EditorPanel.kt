@@ -7,7 +7,7 @@ import javax.swing.JPanel
 
 object EditorPanel {
 
-    fun create(editor: FileEditor, buttons: List<JButton>): JPanel {
+    fun create(editor: FileEditor, buttons: List<JButton> = listOf()): JPanel {
         return JPanel()
             .apply {
                 layout = BoxLayout(this, BoxLayout.PAGE_AXIS)
