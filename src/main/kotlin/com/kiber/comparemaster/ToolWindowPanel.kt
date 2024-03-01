@@ -1,10 +1,15 @@
 package com.kiber.comparemaster
 
 import com.intellij.icons.AllIcons
+import com.intellij.openapi.actionSystem.ActionManager
+import com.intellij.openapi.actionSystem.ActionPlaces
+import com.intellij.openapi.actionSystem.ActionPopupMenu
+import com.intellij.openapi.actionSystem.ActionToolbar
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.project.Project
 import com.intellij.ui.GuiUtils
 import com.kiber.comparemaster.action.FilePairAction
+import com.kiber.comparemaster.action.PopupAction
 import com.kiber.comparemaster.content.file.FilePair
 import com.kiber.comparemaster.content.file.JsonEditorsFileFactory
 import com.kiber.comparemaster.function.CopyContentFunction
@@ -12,7 +17,6 @@ import com.kiber.comparemaster.function.SwapFilesFunction
 import com.kiber.comparemaster.function.json.AddAbsentFieldsFunction
 import com.kiber.comparemaster.function.json.FormatJsonFunction
 import com.kiber.comparemaster.function.json.InlineJsonFunction
-import com.kiber.comparemaster.function.json.ReplaceOnlyPresentValuesFunction
 import com.kiber.comparemaster.ui.CompareEditorFactory
 import com.kiber.comparemaster.ui.EditorPanel
 import com.kiber.comparemaster.ui.EditorsToolbarFactory
@@ -26,6 +30,8 @@ class ToolWindowPanel(project: Project) : JPanel(BorderLayout()) {
     private val editorFactory = CompareEditorFactory(project)
 
     val editorFiles: FilePair = JsonEditorsFileFactory.createFilePair()
+    var toolbar: ActionToolbar
+    var popupMenu: ActionPopupMenu
 
     init {
         val leftEditor = editorFactory.createEditor(editorFiles.left())
@@ -52,12 +58,12 @@ class ToolWindowPanel(project: Project) : JPanel(BorderLayout()) {
             function = CopyContentFunction()
         )
 
-        val replaceOnlyValuesAction = FilePairAction(
-            hint = "Replace existing values from left to right",
-            icon = IconManager.replaceOnlyValues,
-            function = ReplaceOnlyPresentValuesFunction(),
-            applyFinally = { filePair -> FormatJsonFunction.apply(filePair, project) }
-        )
+//        val replaceOnlyValuesAction = FilePairAction(
+//            hint = "Replace existing values from left to right",
+//            icon = IconManager.replaceOnlyValues,
+//            function = ReplaceOnlyPresentValuesFunction(),
+//            applyFinally = { filePair -> FormatJsonFunction.apply(filePair, project) }
+//        )
 
         val addAbsentValuesAction = FilePairAction(
             hint = "Add absent values from left to right",
@@ -84,17 +90,30 @@ class ToolWindowPanel(project: Project) : JPanel(BorderLayout()) {
             function = SwapFilesFunction
         )
 
+        val popupAction = PopupAction(
+            hint = "Replace",
+            icon = IconManager.replaceOnlyValues
+        )
+
         val actionList = listOf(
+            popupAction,
             copyAction,
             formatJsonFunction,
             inlineJsonFunction,
-            replaceOnlyValuesAction,
+//            replaceOnlyValuesAction,
             addAbsentValuesAction,
-            swapAction
+            swapAction,
+
         )
 
-        val toolbar = EditorsToolbarFactory.createToolbar(actionList, this)
+        toolbar = EditorsToolbarFactory.createToolbar(actionList, this)
         add(BorderLayout.WEST, toolbar.component)
+
+//        popupMenu = ActionManager.getInstance().createActionPopupMenu(ActionPlaces.POPUP, toolbar.actionGroup)
+//        popupMenu = ActionManager.getInstance().createActionPopupMenu(ActionPlaces.EDITOR_TAB_POPUP, toolbar.actionGroup)
+        popupMenu = ActionManager.getInstance().createActionPopupMenu(ActionPlaces.TOOLWINDOW_POPUP, toolbar.actionGroup)
+        popupMenu.setTargetComponent(this)
+
         //***************************************************************
     }
 }
