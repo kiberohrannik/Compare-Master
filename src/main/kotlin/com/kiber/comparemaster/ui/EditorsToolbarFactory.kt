@@ -4,13 +4,13 @@ import com.intellij.execution.runToolbar.RunToolbarMoreActionGroup
 import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.actionSystem.ActionPlaces
 import com.intellij.openapi.actionSystem.ActionToolbar
-import com.intellij.openapi.actionSystem.AnAction
 import com.kiber.comparemaster.ToolWindowPanel
+import com.kiber.comparemaster.action.PluginAction
 import javax.swing.SwingConstants
 
 object EditorsToolbarFactory {
 
-    fun createToolbar(actions: List<AnAction>, targetComponent: ToolWindowPanel): ActionToolbar {
+    fun createToolbar(actions: List<PluginAction>, targetComponent: ToolWindowPanel): ActionToolbar {
         val group = RunToolbarMoreActionGroup()
         actions.forEach {
             group.add(it)

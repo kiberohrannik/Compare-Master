@@ -9,21 +9,11 @@
 
     <depends>com.intellij.modules.platform</depends>
 
-    <!-- Extension points defined by the plugin.
-         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow id="ECHO Viewer" anchor="right" factoryClass="com.kiber.comparemaster.EditorsToolWindowFactory"/>
+        <toolWindow id="Compare Master" anchor="right" factoryClass="com.kiber.comparemaster.EditorsToolWindowFactory"/>
         <annotator language="JSON" implementationClass="com.intellij.json.codeinsight.JsonLiteralAnnotator"/>
         <lang.syntaxHighlighter implementationClass="com.intellij.jsonpath.JsonPathSyntaxHighlighter" language="JSON"/>
+        <postStartupActivity implementation="com.kiber.comparemaster.config.BasicActionsLoader"/>
     </extensions>
 
-    <actions>
-<!--        <action-->
-<!--                id="StackOverflow.AskQuestion.ToolsMenu"-->
-<!--                class="com.kiber.comparemaster.old.AskQuestionAction"-->
-<!--                text="123123"-->
-<!--                description="123123">-->
-<!--            <add-to-group group-id="ToolsMenu" anchor="last"/>-->
-<!--        </action>-->
-    </actions>
 </idea-plugin>

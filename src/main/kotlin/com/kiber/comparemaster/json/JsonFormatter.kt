@@ -1,7 +1,6 @@
 package com.kiber.comparemaster.json
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.jetbrains.rd.util.string.printToString
 
 object JsonFormatter {
     private val objectMapper = ObjectMapper()

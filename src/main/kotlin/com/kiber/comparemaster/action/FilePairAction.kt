@@ -1,9 +1,6 @@
 package com.kiber.comparemaster.action
 
-import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
-import com.intellij.openapi.wm.ToolWindowManager
-import com.kiber.comparemaster.ToolWindowPanel
 import com.kiber.comparemaster.content.file.FilePair
 import com.kiber.comparemaster.function.FilePairFunction
 import javax.swing.Icon
@@ -14,14 +11,12 @@ class FilePairAction(
     icon: Icon?,
     private val function: FilePairFunction,
     private val applyFinally: ((filePair: FilePair) -> Unit)? = null
-) : AnAction(hint, description, icon) {
+) : PluginAction(hint, description, icon) {
 
     override fun actionPerformed(event: AnActionEvent) {
-        //TODO null handling
-        val toolWindow = ToolWindowManager.getInstance(event.project!!).getToolWindow("ECHO Viewer")
-        val toolWindowPanel = toolWindow!!.contentManager.getContent(0)!!.component as ToolWindowPanel
+        val toolWindowPanel = getToolWindowPanel(event)
 
-        function.apply(toolWindowPanel.editorFiles, event.project!!)
+        function.apply(toolWindowPanel.editorFiles, getProject(event))
 
         applyFinally?.invoke(toolWindowPanel.editorFiles)
     }

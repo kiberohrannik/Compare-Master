@@ -16,7 +16,6 @@ object InlineJsonFunction: JsonFilePairFunction {
 
 
     private fun inline(file: VirtualFile, project: Project) {
-        //TODO null handling
         val prettyJson = JsonFormatter.toRawJson(file.findDocument()!!.text)
         ContentOperations.setText(prettyJson, file, project)
     }

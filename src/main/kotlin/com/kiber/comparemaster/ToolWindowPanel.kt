@@ -1,24 +1,15 @@
 package com.kiber.comparemaster
 
-import com.intellij.icons.AllIcons
-import com.intellij.openapi.actionSystem.ActionToolbar
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.project.Project
 import com.intellij.ui.GuiUtils
-import com.kiber.comparemaster.action.FilePairAction
-import com.kiber.comparemaster.action.PopupAction
+import com.kiber.comparemaster.action.PluginAction
+import com.kiber.comparemaster.config.SideMenuManager
 import com.kiber.comparemaster.content.file.FilePair
 import com.kiber.comparemaster.content.file.JsonEditorsFileFactory
-import com.kiber.comparemaster.function.CopyContentFunction
-import com.kiber.comparemaster.function.SwapFilesFunction
-import com.kiber.comparemaster.function.json.AddAbsentFieldsFunction
-import com.kiber.comparemaster.function.json.FormatJsonFunction
-import com.kiber.comparemaster.function.json.InlineJsonFunction
-import com.kiber.comparemaster.function.json.ReplaceOnlyPresentValuesFunction
 import com.kiber.comparemaster.ui.CompareEditorFactory
 import com.kiber.comparemaster.ui.EditorPanel
 import com.kiber.comparemaster.ui.EditorsToolbarFactory
-import com.kiber.comparemaster.ui.IconManager
 import java.awt.BorderLayout
 import javax.swing.JPanel
 import javax.swing.JSplitPane
@@ -28,7 +19,6 @@ class ToolWindowPanel(project: Project) : JPanel(BorderLayout()) {
     private val editorFactory = CompareEditorFactory(project)
 
     val editorFiles: FilePair = JsonEditorsFileFactory.createFilePair()
-    var toolbar: ActionToolbar
 
     init {
         val leftEditor = editorFactory.createEditor(editorFiles.left())
@@ -46,69 +36,11 @@ class ToolWindowPanel(project: Project) : JPanel(BorderLayout()) {
             editorFiles.leftDoc().insertString(0, """{"employee":{"name":"sonoo","salary":56000,"married":true}}""")
         }
 
-        //***************************************************************
-        //TODO replace it with XML configuration
+        val actionList: MutableList<PluginAction> = mutableListOf()
+        actionList.addAll(SideMenuManager.getActions())
+        actionList.addAll(SideMenuManager.getPopups())
 
-        val copyAction = FilePairAction(
-            hint = "Copy to right editor",
-            icon = AllIcons.Actions.Copy,
-            function = CopyContentFunction()
-        )
-
-        val formatJsonFunction = FilePairAction(
-            hint = "Format",
-            icon = IconManager.formatText,
-            function = FormatJsonFunction,
-        )
-
-        val inlineJsonFunction = FilePairAction(
-            hint = "Inline",
-            icon = IconManager.inlineText,
-            function = InlineJsonFunction,
-        )
-
-        val swapAction = FilePairAction(
-            hint = "Swap",
-            icon = IconManager.swapFiles,
-            function = SwapFilesFunction
-        )
-
-        val replaceOnlyValuesAction = FilePairAction(
-            hint = "Replace existing values from left to right",
-            icon = null,
-            function = ReplaceOnlyPresentValuesFunction(),
-            applyFinally = { filePair -> FormatJsonFunction.apply(filePair, project) }
-        )
-
-        val addAbsentValuesAction = FilePairAction(
-            hint = "Add absent values from left to right",
-            icon = null,
-            function = AddAbsentFieldsFunction(),
-            applyFinally = { filePair -> FormatJsonFunction.apply(filePair, project) }
-        )
-
-        val popupActionList = listOf(
-            replaceOnlyValuesAction,
-            addAbsentValuesAction
-        )
-
-        val popupAction = PopupAction(
-            hint = "Replace",
-            icon = IconManager.replaceOnlyValues,
-            actions = popupActionList
-        )
-
-        val actionList = listOf(
-            popupAction,
-            copyAction,
-            formatJsonFunction,
-            inlineJsonFunction,
-            swapAction,
-        )
-
-        toolbar = EditorsToolbarFactory.createToolbar(actionList, this)
+        val toolbar = EditorsToolbarFactory.createToolbar(actionList, this)
         add(BorderLayout.WEST, toolbar.component)
-
-        //***************************************************************
     }
 }

@@ -16,7 +16,6 @@ object FormatJsonFunction: JsonFilePairFunction {
 
 
     private fun format(file: VirtualFile, project: Project) {
-        //TODO null handling
         val prettyJson = JsonFormatter.toPrettyJson(file.findDocument()!!.text)
         ContentOperations.setText(prettyJson, file, project)
     }

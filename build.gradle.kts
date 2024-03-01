@@ -29,6 +29,7 @@ dependencies {
     implementation("com.flipkart.zjsonpatch:zjsonpatch:$jsonPatchVersion")
     implementation("org.json:json:$jsonLibVersion")
     compileOnly("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
+    compileOnly("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
 
 
     testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
