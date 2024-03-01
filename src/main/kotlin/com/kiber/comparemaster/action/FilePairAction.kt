@@ -11,7 +11,7 @@ import javax.swing.Icon
 class FilePairAction(
     hint: String,
     description: String = "",
-    icon: Icon,
+    icon: Icon?,
     private val function: FilePairFunction,
     private val applyFinally: ((filePair: FilePair) -> Unit)? = null
 ) : AnAction(hint, description, icon) {

@@ -1,6 +1,8 @@
 package com.kiber.comparemaster.action
 
-import com.intellij.execution.runToolbar.environment
+import com.intellij.execution.runToolbar.RunToolbarMoreActionGroup
+import com.intellij.openapi.actionSystem.ActionManager
+import com.intellij.openapi.actionSystem.ActionPlaces
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.impl.ActionButton
@@ -14,20 +16,27 @@ class PopupAction(
     hint: String,
     description: String = "",
     icon: Icon,
-    private val functions: List<FilePairFunction> = listOf()
+    private val actions: List<FilePairAction> = listOf()
 ) : AnAction(hint, description, icon) {
 
     override fun actionPerformed(event: AnActionEvent) {
         val toolWindow = ToolWindowManager.getInstance(event.project!!).getToolWindow("ECHO Viewer")
         val toolWindowPanel = toolWindow!!.contentManager.getContent(0)!!.component as ToolWindowPanel
 
-//        toolWindowPanel.popupMenu.component.show(toolWindowPanel, 40, 0)
+        val group = RunToolbarMoreActionGroup()
+        actions.forEach {
+            group.add(it)
+            group.addSeparator()
+        }
+
+        val popupMenu = ActionManager.getInstance()
+            .createActionPopupMenu(ActionPlaces.TOOLWINDOW_POPUP, group)
+        popupMenu.setTargetComponent(toolWindowPanel)
+
         val mouseEvent = event.inputEvent as? MouseEvent
 
         if (mouseEvent != null) {
-            toolWindowPanel.popupMenu.component.show(toolWindowPanel,
-                mouseEvent.x + 20,
-                (mouseEvent.source as ActionButton).y)
+            popupMenu.component.show(toolWindowPanel,mouseEvent.x + 20, (mouseEvent.source as ActionButton).y)
         }
     }
 }
