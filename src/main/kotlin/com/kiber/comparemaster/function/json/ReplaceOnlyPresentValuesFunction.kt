@@ -5,8 +5,9 @@ import com.kiber.comparemaster.content.file.FilePair
 import com.kiber.comparemaster.content.parser.json.FilterStepsOperation
 import com.kiber.comparemaster.content.parser.json.JsonPatchOperations
 import com.kiber.comparemaster.function.internal.ContentOperations
+import com.kiber.comparemaster.json.JsonFormatter
 
-class ReplaceOnlyPresentValuesFunction: JsonFilePairFunction {
+class ReplaceOnlyPresentValuesFunction : JsonFilePairFunction {
 
     override fun apply(filePair: FilePair, project: Project) {
         //left is target
@@ -19,6 +20,9 @@ class ReplaceOnlyPresentValuesFunction: JsonFilePairFunction {
             .apply(FilterStepsOperation.filterOnlyPresentValues())
             .patchJson()
 
-        ContentOperations.setText(result, filePair.right(), project)
+        val formatFunc = { text: String -> JsonFormatter.toPrettyJson(text) }
+
+        ContentOperations.setAndFormat(result, formatFunc, filePair.right(), project)
+        ContentOperations.setAndFormat(target, formatFunc, filePair.left(), project)
     }
 }

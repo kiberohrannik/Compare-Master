@@ -5,6 +5,7 @@ import com.kiber.comparemaster.content.file.FilePair
 import com.kiber.comparemaster.content.parser.json.FilterStepsOperation
 import com.kiber.comparemaster.content.parser.json.JsonPatchOperations
 import com.kiber.comparemaster.function.internal.ContentOperations
+import com.kiber.comparemaster.json.JsonFormatter
 
 class AddAbsentFieldsFunction: JsonFilePairFunction {
 
@@ -19,6 +20,9 @@ class AddAbsentFieldsFunction: JsonFilePairFunction {
             .apply(FilterStepsOperation.filterOnlyAbsentValues())
             .patchJson()
 
-        ContentOperations.setText(result, filePair.right(), project)
+        val formatFunc = { text: String -> JsonFormatter.toPrettyJson(text) }
+
+        ContentOperations.setAndFormat(result, formatFunc, filePair.right(), project)
+        ContentOperations.setAndFormat(target, formatFunc, filePair.left(), project)
     }
 }

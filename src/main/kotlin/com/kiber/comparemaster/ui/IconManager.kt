@@ -5,6 +5,7 @@ import javax.swing.Icon
 
 object IconManager {
 
+    val toolWindowIcon: Icon = load("icons/main.svg")
     val swapFiles: Icon = load("icons/swap.svg")
     val replaceOnlyValues: Icon = load("icons/replace-values.svg")
     val formatText: Icon = load("icons/format.svg")

@@ -13,18 +13,18 @@ import com.kiber.comparemaster.function.json.InlineJsonFunction
 import com.kiber.comparemaster.function.json.ReplaceOnlyPresentValuesFunction
 import com.kiber.comparemaster.ui.IconManager
 
-class BasicActionsLoader: ActionsLoader {
+object BasicActionsLoader {
 
-    override suspend fun execute(project: Project) {
+    fun execute(project: Project) {
         setupTopMenu()
-        setupSideMenu(project)
+        setupSideMenu()
     }
 
     private fun setupTopMenu() {
         TopMenuManager.add(ShowDiffAction())
     }
 
-    private fun setupSideMenu(project: Project) {
+    private fun setupSideMenu() {
         val copyAction = FilePairAction(
             hint = "Copy to right editor",
             icon = AllIcons.Actions.Copy,
@@ -52,15 +52,13 @@ class BasicActionsLoader: ActionsLoader {
         val replaceOnlyValuesAction = FilePairAction(
             hint = "Replace existing values from left to right",
             icon = null,
-            function = ReplaceOnlyPresentValuesFunction(),
-            applyFinally = { filePair -> FormatJsonFunction.apply(filePair, project) }
+            function = ReplaceOnlyPresentValuesFunction()
         )
 
         val addAbsentValuesAction = FilePairAction(
             hint = "Add absent values from left to right",
             icon = null,
-            function = AddAbsentFieldsFunction(),
-            applyFinally = { filePair -> FormatJsonFunction.apply(filePair, project) }
+            function = AddAbsentFieldsFunction()
         )
 
         val popupAction = PopupAction(

@@ -10,10 +10,12 @@
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow id="Compare Master" anchor="right" factoryClass="com.kiber.comparemaster.EditorsToolWindowFactory"/>
+        <toolWindow id="C-Master" anchor="right" factoryClass="com.kiber.comparemaster.EditorsToolWindowFactory"/>
         <annotator language="JSON" implementationClass="com.intellij.json.codeinsight.JsonLiteralAnnotator"/>
         <lang.syntaxHighlighter implementationClass="com.intellij.jsonpath.JsonPathSyntaxHighlighter" language="JSON"/>
-        <postStartupActivity implementation="com.kiber.comparemaster.config.BasicActionsLoader"/>
+<!--        <postStartupActivity implementation="com.kiber.comparemaster.config.BasicActionsLoader"/>-->
+<!--        <projectOpenProcessor implementation="com.kiber.comparemaster.config.BasicActionsLoader"/>-->
+        <projectCloseHandler implementation="com.kiber.comparemaster.config.CloseHandler"/>
     </extensions>
 
 </idea-plugin>

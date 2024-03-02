@@ -1,6 +1,6 @@
 package com.kiber.comparemaster
 
-import com.intellij.openapi.command.WriteCommandAction
+import com.intellij.openapi.fileEditor.FileEditor
 import com.intellij.openapi.project.Project
 import com.intellij.ui.GuiUtils
 import com.kiber.comparemaster.action.PluginAction
@@ -18,11 +18,13 @@ class ToolWindowPanel(project: Project) : JPanel(BorderLayout()) {
 
     private val editorFactory = CompareEditorFactory(project)
 
-    val editorFiles: FilePair = JsonEditorsFileFactory.createFilePair()
+    val editorFiles: FilePair = JsonEditorsFileFactory.getFilePair()
+    val leftEditor: FileEditor
+    val rightEditor: FileEditor
 
     init {
-        val leftEditor = editorFactory.createEditor(editorFiles.left())
-        val rightEditor = editorFactory.createEditor(editorFiles.right())
+        leftEditor = editorFactory.createEditor(editorFiles.left())
+        rightEditor = editorFactory.createEditor(editorFiles.right())
 
         val leftPanel = EditorPanel.create(leftEditor)
         val rightPanel = EditorPanel.create(rightEditor)
@@ -31,10 +33,6 @@ class ToolWindowPanel(project: Project) : JPanel(BorderLayout()) {
         add(splitPane, BorderLayout.CENTER)
 
         GuiUtils.replaceJSplitPaneWithIDEASplitter(this)
-
-        WriteCommandAction.runWriteCommandAction(project) {
-            editorFiles.leftDoc().insertString(0, """{"employee":{"name":"sonoo","salary":56000,"married":true}}""")
-        }
 
         val actionList: MutableList<PluginAction> = mutableListOf()
         actionList.addAll(SideMenuManager.getActions())
