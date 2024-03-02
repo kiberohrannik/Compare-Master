@@ -2,10 +2,15 @@
 <idea-plugin>
     <id>com.kiber.CompareMaster</id>
     <name>CompareMaster</name>
+    <version>1.1.10</version>
 
-    <vendor email="stub.com" url="https://www.stub.com">stub</vendor>
+    <vendor email="kiberdevv@gmail.com">Victoria Kulyk</vendor>
 
-    <description>The description is not set yet. Please wait for plugin implementation</description>
+    <description> <![CDATA[
+Tool window with 2 editors for JSON processing and comparison.
+<br>Helps to format, compare, replace, sort and show diff in given JSON files.
+]]>
+    </description>
 
     <depends>com.intellij.modules.platform</depends>
 
@@ -13,8 +18,6 @@
         <toolWindow id="C-Master" anchor="right" factoryClass="com.kiber.comparemaster.EditorsToolWindowFactory"/>
         <annotator language="JSON" implementationClass="com.intellij.json.codeinsight.JsonLiteralAnnotator"/>
         <lang.syntaxHighlighter implementationClass="com.intellij.jsonpath.JsonPathSyntaxHighlighter" language="JSON"/>
-<!--        <postStartupActivity implementation="com.kiber.comparemaster.config.BasicActionsLoader"/>-->
-<!--        <projectOpenProcessor implementation="com.kiber.comparemaster.config.BasicActionsLoader"/>-->
         <projectCloseHandler implementation="com.kiber.comparemaster.config.CloseHandler"/>
     </extensions>
 
