@@ -1,7 +1,6 @@
 package com.kiber.comparemaster.config
 
-import com.intellij.openapi.startup.ProjectActivity
+fun interface ActionsLoader {
 
-interface ActionsLoader: ProjectActivity {
-
+    fun load()
 }

@@ -13,11 +13,15 @@ import com.kiber.comparemaster.function.json.InlineJsonFunction
 import com.kiber.comparemaster.function.json.ReplaceOnlyPresentValuesFunction
 import com.kiber.comparemaster.ui.IconManager
 
-object BasicActionsLoader {
+@PluginConfiguration
+object BasicActionsLoader: ActionsLoader {
 
-    fun execute(project: Project) {
+    override fun load() {
         setupTopMenu()
         setupSideMenu()
+
+        println("\n\nBasicActionsLoader !!!!! ===================================\n\n")
+
     }
 
     private fun setupTopMenu() {
