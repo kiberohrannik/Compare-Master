@@ -1,13 +1,9 @@
 package com.kiber.comparemaster.content.parser.json
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.kiber.comparemaster.config.ActionsLoader
-import com.kiber.comparemaster.config.PluginConfigurationProcessor
 import com.kiber.comparemaster.util.JsonGenerator
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
-import java.lang.instrument.Instrumentation
-import kotlin.reflect.full.functions
 
 class FilterStepsOperationTest : FunSpec({
 

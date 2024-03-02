@@ -19,6 +19,5 @@ import com.kiber.comparemaster.ui.IconManager
 class TestActionsLoader: ActionsLoader {
 
     override fun load() {
-        println("\n\nTEST !!!!! ===================================\n\n")
     }
 }

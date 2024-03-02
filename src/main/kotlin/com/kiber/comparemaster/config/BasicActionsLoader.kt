@@ -4,12 +4,10 @@ import com.intellij.icons.AllIcons
 import com.kiber.comparemaster.action.FilePairAction
 import com.kiber.comparemaster.action.PopupAction
 import com.kiber.comparemaster.action.ShowDiffAction
+import com.kiber.comparemaster.function.ClearContentFunction
 import com.kiber.comparemaster.function.CopyContentFunction
 import com.kiber.comparemaster.function.SwapFilesFunction
-import com.kiber.comparemaster.function.json.AddAbsentFieldsFunction
-import com.kiber.comparemaster.function.json.FormatJsonFunction
-import com.kiber.comparemaster.function.json.InlineJsonFunction
-import com.kiber.comparemaster.function.json.ReplaceOnlyPresentValuesFunction
+import com.kiber.comparemaster.function.json.*
 import com.kiber.comparemaster.ui.IconManager
 
 @PluginConfiguration
@@ -18,9 +16,6 @@ object BasicActionsLoader: ActionsLoader {
     override fun load() {
         setupTopMenu()
         setupSideMenu()
-
-        println("\n\nBasicActionsLoader !!!!! ===================================\n\n")
-
     }
 
     private fun setupTopMenu() {
@@ -28,6 +23,12 @@ object BasicActionsLoader: ActionsLoader {
     }
 
     private fun setupSideMenu() {
+        val clearAction = FilePairAction(
+            hint = "Clean all",
+            icon = IconManager.cleanAll,
+            function = ClearContentFunction()
+        )
+
         val copyAction = FilePairAction(
             hint = "Copy to right editor",
             icon = AllIcons.Actions.Copy,
@@ -39,6 +40,13 @@ object BasicActionsLoader: ActionsLoader {
             icon = IconManager.swapFiles,
             function = SwapFilesFunction
         )
+
+        val sortAction = FilePairAction(
+            hint = "Sort",
+            icon = AllIcons.ObjectBrowser.Sorted,
+            function = SortJsonFunction
+        )
+
 
         val formatJsonFunction = FilePairAction(
             hint = "Format",
@@ -70,7 +78,7 @@ object BasicActionsLoader: ActionsLoader {
             actions = listOf(replaceOnlyValuesAction, addAbsentValuesAction)
         )
 
-        SideMenuManager.add(copyAction, swapAction, formatJsonFunction, inlineJsonFunction)
+        SideMenuManager.add(clearAction, copyAction, swapAction, sortAction, formatJsonFunction, inlineJsonFunction)
         SideMenuManager.add(popupAction)
     }
 }
