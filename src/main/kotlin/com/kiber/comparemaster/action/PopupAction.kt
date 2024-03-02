@@ -5,6 +5,7 @@ import com.intellij.openapi.actionSystem.ActionManager
 import com.intellij.openapi.actionSystem.ActionPlaces
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.impl.ActionButton
+import com.kiber.comparemaster.ui.ComponentsResolver
 import java.awt.event.MouseEvent
 import javax.swing.Icon
 
@@ -16,7 +17,7 @@ class PopupAction(
 ) : PluginAction(hint, description, icon) {
 
     override fun actionPerformed(event: AnActionEvent) {
-        val toolWindowPanel = getToolWindowPanel(event)
+        val toolWindowPanel = ComponentsResolver.getToolWindowPanel(getProject(event))
 
         val group = RunToolbarMoreActionGroup()
         actions.forEach {

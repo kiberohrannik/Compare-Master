@@ -1,7 +1,6 @@
 package com.kiber.comparemaster.config
 
 import com.intellij.icons.AllIcons
-import com.intellij.openapi.project.Project
 import com.kiber.comparemaster.action.FilePairAction
 import com.kiber.comparemaster.action.PopupAction
 import com.kiber.comparemaster.action.ShowDiffAction
