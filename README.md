@@ -1,4 +1,4 @@
-## Compare-Master
+## CompareMaster
 
 Intellij IDEA plugin for JSON processing and comparison.
 
