@@ -10,7 +10,7 @@ class FilterStepsOperationTest : FunSpec({
 
     val mapper = ObjectMapper()
 
-    test("should replace only existing values") {
+    test("should replace only existing values").config(invocations = 3) {
         val sourceObj = JsonGenerator.TestObject4()
         val targetObj = JsonGenerator.TestObject2()
 
@@ -33,7 +33,7 @@ class FilterStepsOperationTest : FunSpec({
         sourceObj.field4 shouldBeEqual resultObj.field4
     }
 
-    test("should add absent values") {
+    test("should add absent values").config(invocations = 3)  {
         val sourceObj = JsonGenerator.TestObject4()
         val targetObj = JsonGenerator.TestObject2()
 

@@ -27,7 +27,7 @@ object JsonGenerator {
     )
 
     private fun getList(): List<String> {
-        val listSize = random.nextInt(0, 5)
+        val listSize = random.nextInt(0, 10)
         val randomList = mutableListOf<String>()
         for(i in 0..listSize) {
             randomList.add(RandomString.make())
