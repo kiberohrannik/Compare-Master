@@ -11,7 +11,7 @@ object SideMenuManager {
     private val popups: MutableList<PopupAction> = mutableListOf()
 
     fun add(vararg actions: FilePairAction) {
-        if(!TopMenuManager.sealed) {
+        if(!sealed) {
             this.actions.addAll(actions)
         }
     }

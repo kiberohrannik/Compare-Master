@@ -27,10 +27,10 @@ object JsonGenerator {
     )
 
     private fun getList(): List<String> {
-        val listSize = random.nextInt(0, 2)
+        val listSize = random.nextInt(0, 5)
         val randomList = mutableListOf<String>()
         for(i in 0..listSize) {
-            randomList.addLast(RandomString.make())
+            randomList.add(RandomString.make())
         }
 
         return randomList

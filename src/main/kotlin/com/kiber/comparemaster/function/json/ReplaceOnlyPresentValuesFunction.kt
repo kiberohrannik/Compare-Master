@@ -13,8 +13,8 @@ class ReplaceOnlyPresentValuesFunction : JsonFilePairFunction {
         //left is target
         //right is a source
 
-        val source = filePair.rightDoc().text
-        val target = filePair.leftDoc().text
+        val source = filePair.rightText()
+        val target = filePair.leftText()
 
         val result = JsonPatchOperations.toJsonPatch(source, target)
             .apply(FilterStepsOperation.filterOnlyPresentValues())

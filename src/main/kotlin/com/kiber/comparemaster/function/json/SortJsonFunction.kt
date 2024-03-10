@@ -11,14 +11,14 @@ object SortJsonFunction : JsonFilePairFunction {
         val formatFunc = { text: String -> JsonFormatter.toPrettyJson(text) }
 
         ContentOperations.setAndFormat(
-            JsonFormatter.toSortedJson(filePair.leftDoc().text),
+            JsonFormatter.toSortedJson(filePair.leftText()),
             formatFunc,
             filePair.left(),
             project
         )
 
         ContentOperations.setAndFormat(
-            JsonFormatter.toSortedJson(filePair.rightDoc().text),
+            JsonFormatter.toSortedJson(filePair.rightText()),
             formatFunc,
             filePair.right(),
             project

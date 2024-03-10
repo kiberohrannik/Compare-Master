@@ -9,7 +9,7 @@ import com.kiber.comparemaster.function.internal.ContentOperations
 class CopyContentFunction : FilePairFunction {
 
     override fun apply(filePair: FilePair, project: Project) {
-        ContentOperations.setText(filePair.leftDoc().text, filePair.right(), project)
+        ContentOperations.setText(filePair.leftText(false), filePair.right(), project)
     }
 
     override fun supports(fileType: EFileTypes): Boolean {

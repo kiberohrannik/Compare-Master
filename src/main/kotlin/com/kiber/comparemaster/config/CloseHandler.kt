@@ -17,6 +17,9 @@ class CloseHandler : ProjectCloseHandler {
         panel.editorFactory.releaseEditor(panel.leftEditor)
         panel.editorFactory.releaseEditor(panel.rightEditor)
 
+//        TopMenuManager.sealed = false
+//        SideMenuManager.sealed = false
+
         return true
     }
 }

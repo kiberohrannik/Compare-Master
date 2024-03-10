@@ -18,7 +18,7 @@ class ToolWindowPanel(project: Project) : JPanel(BorderLayout()) {
 
     internal val editorFactory = DefaultEditorManager(project)
 
-    internal val editorFiles: FilePair = JsonEditorsFileManager.getFilePair()
+    internal val editorFiles: FilePair = JsonEditorsFileManager.createFilePair()
     internal val leftEditor: FileEditor = editorFactory.createEditor(editorFiles.left())
     internal val rightEditor: FileEditor = editorFactory.createEditor(editorFiles.right())
 

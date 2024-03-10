@@ -19,7 +19,9 @@ object ContentOperations {
 
     fun setText(text: String, virtualFile: VirtualFile, project: Project) {
         WriteCommandAction.runWriteCommandAction(project) {
-            virtualFile.findDocument()!!.setText(text)
+            virtualFile.findDocument()!!.setText(toIntellijLineBreak(text))
         }
     }
+
+    private fun toIntellijLineBreak(text: String): String = text.replace("\r\n", "\n")
 }
