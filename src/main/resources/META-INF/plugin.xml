@@ -12,6 +12,14 @@ Tool window with 2 editors for JSON processing and comparison.
 ]]>
     </description>
 
+    <change-notes><![CDATA[
+<h2>Bug Fixes</h2>
+<ul>
+  <li>Error when formatting JSON has been fixed (occurred in Windows OS due to line separator)</li>
+  <li>'Add absent values from left to right' operation has been fixed when working with JSON arrays</li>
+</ul>
+]]></change-notes>
+
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
