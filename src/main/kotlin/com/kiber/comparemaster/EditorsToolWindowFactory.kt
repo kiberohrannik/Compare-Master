@@ -15,13 +15,13 @@ const val PLUGIN_NAME = "C-Master"
 class EditorsToolWindowFactory: ToolWindowFactory {
 
     override fun init(toolWindow: ToolWindow) {
-        PluginConfigurationProcessor().loadAnnotated()
-
         toolWindow.setIcon(IconManager.toolWindowIcon)
         super.init(toolWindow)
     }
 
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
+        PluginConfigurationProcessor().loadAnnotated()
+
         TopMenuManager.sealed = true
         SideMenuManager.sealed = true
 
