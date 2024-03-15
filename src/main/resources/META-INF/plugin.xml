@@ -15,7 +15,7 @@ Tool window with 2 editors for JSON processing and comparison.
     <change-notes><![CDATA[
 <h2>Bug Fixes</h2>
 <ul>
-  <li>Fixed side menu rendering for multimodule projects and if one project is opened twice in separate Intellij IDEA windows.</li>
+  <li>Fixed side menu rendering for multimodule projects and if one project is opened twice in separate IDE windows.</li>
 </ul>
 ]]></change-notes>
 
