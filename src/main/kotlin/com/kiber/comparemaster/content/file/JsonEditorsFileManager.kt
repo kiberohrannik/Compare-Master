@@ -18,14 +18,14 @@ object JsonEditorsFileManager : EditorsFileManager {
         return getFilePair()
     }
 
-    override fun getFilePair(): FilePair {
-        return FilePair(file1, file2)
-    }
+    override fun getFilePair(): FilePair = FilePair(file1, file2)
 
     override fun releaseFiles(project: Project) {
-        WriteCommandAction.runWriteCommandAction(project) {
-            getFilePair().leftDoc().setText("")
-            getFilePair().rightDoc().setText("")
+        if(::file1.isInitialized && ::file2.isInitialized) {
+            WriteCommandAction.runWriteCommandAction(project) {
+                getFilePair().leftDoc().setText("")
+                getFilePair().rightDoc().setText("")
+            }
         }
     }
 }
