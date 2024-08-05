@@ -8,14 +8,20 @@
 
     <description> <![CDATA[
 Tool window with 2 editors for JSON processing and comparison.
-<br>Helps to format, compare, replace, sort and show diff in given JSON files.
+<br>Helps to format, compare, replace, sort and show differences in given JSON files.
 ]]>
     </description>
 
     <change-notes><![CDATA[
+<h2>New Features</h2>
+<ul>
+  <li>Added multi-tab support</li>
+  <li>'Show differences' function has been moved closer, to the side menu</li>
+</ul>
+
 <h2>Bug Fixes</h2>
 <ul>
-  <li>Fixed 'lateinit property...not initialized' error when switching project windows.</li>
+  <li>Fixed 'Add absent values from left to right' function</li>
 </ul>
 ]]></change-notes>
 
