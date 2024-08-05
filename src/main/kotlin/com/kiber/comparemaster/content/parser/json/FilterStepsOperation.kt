@@ -20,7 +20,7 @@ object FilterStepsOperation {
         { patchSteps, sourceNode ->
             StepsOperation(
                 patchSteps.filter {
-                    it.op == "add" && !it.path.matches(Regex(".*/\\d$"))
+                    it.op == "add" && it.path.matches(Regex(".*\\/\\d$"))
                 },
                 sourceNode
             )
