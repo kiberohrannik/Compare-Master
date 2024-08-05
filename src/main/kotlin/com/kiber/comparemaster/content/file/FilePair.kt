@@ -5,7 +5,8 @@ import com.intellij.openapi.editor.impl.DocumentImpl
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.vfs.findDocument
 
-data class FilePair(private val file1: EVirtualFile, private val file2: EVirtualFile) {
+data class FilePair(val prefix: Long,
+                    internal val file1: EVirtualFile, internal val file2: EVirtualFile) {
 
     fun left(): VirtualFile = file1.internalFile
     fun right(): VirtualFile = file2.internalFile

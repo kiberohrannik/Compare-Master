@@ -7,7 +7,9 @@ interface EditorsFileManager {
     //TODO refactor this method to be safe from miss-usage
     fun createFilePair(): FilePair
 
-    fun getFilePair(): FilePair
+    fun getFilePair(prefix: Long): FilePair?
 
-    fun releaseFiles(project: Project)
+    fun releaseFiles(prefix: Long, project: Project)
+
+    fun releaseAllFiles(project: Project)
 }

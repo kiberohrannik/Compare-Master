@@ -2,7 +2,7 @@
 <idea-plugin>
     <id>com.kiber.CompareMaster</id>
     <name>CompareMaster</name>
-    <version>1.1.12</version>
+    <version>1.1.13</version>
 
     <vendor email="kiberdevv@gmail.com">Victoria Kulyk</vendor>
 
@@ -15,7 +15,7 @@ Tool window with 2 editors for JSON processing and comparison.
     <change-notes><![CDATA[
 <h2>Bug Fixes</h2>
 <ul>
-  <li>Fixed side menu rendering for multimodule projects and if one project is opened twice in separate IDE windows.</li>
+  <li>Fixed 'lateinit property...not initialized' error when switching project windows.</li>
 </ul>
 ]]></change-notes>
 

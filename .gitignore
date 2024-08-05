@@ -46,3 +46,5 @@ bin/
 gradle/wrapper
 gradlew
 gradlew.bat
+
+/src/test/kotlin/com/kiber/comparemaster/util/schema.json

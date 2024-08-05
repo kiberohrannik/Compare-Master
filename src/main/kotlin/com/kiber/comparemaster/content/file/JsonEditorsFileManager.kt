@@ -5,26 +5,45 @@ import com.intellij.openapi.project.Project
 
 object JsonEditorsFileManager : EditorsFileManager {
 
-    private val FILE_1_NAME = "file-${System.currentTimeMillis()}1.json"
-    private val FILE_2_NAME = "file-${System.currentTimeMillis()}2.json"
-    private lateinit var file1: JsonEVirtualFile
-    private lateinit var file2: JsonEVirtualFile
+//    private val FILE_1_NAME = "file1-${System.currentTimeMillis()}.json"
+//    private val FILE_2_NAME = "file2-${System.currentTimeMillis()}.json"
+
+    private var filePairMap: Map<Long, FilePair> = mutableMapOf()
+//    private lateinit var file1: JsonEVirtualFile
+//    private lateinit var file2: JsonEVirtualFile
 
 
     override fun createFilePair(): FilePair {
-        file1 = JsonEVirtualFile(FILE_1_NAME)
-        file2 = JsonEVirtualFile(FILE_2_NAME)
+        val prefix = System.currentTimeMillis()
+        val file1Name = "file1-$prefix.json"
+        val file2Name = "file2-$prefix.json"
 
-        return getFilePair()
+        val file1 = JsonEVirtualFile(file1Name)
+        val file2 = JsonEVirtualFile(file2Name)
+
+        val pair = FilePair(prefix, file1, file2)
+        filePairMap.plus(prefix to pair)
+
+        return pair
     }
 
-    override fun getFilePair(): FilePair = FilePair(file1, file2)
+    override fun getFilePair(prefix: Long): FilePair? = filePairMap[prefix]
 
-    override fun releaseFiles(project: Project) {
-        if(::file1.isInitialized && ::file2.isInitialized) {
+    override fun releaseFiles(prefix: Long, project: Project) {
+        val pair = filePairMap[prefix]
+        if(pair != null) {
             WriteCommandAction.runWriteCommandAction(project) {
-                getFilePair().leftDoc().setText("")
-                getFilePair().rightDoc().setText("")
+                pair.leftDoc().setText("")
+                pair.rightDoc().setText("")
+            }
+        }
+    }
+
+    override fun releaseAllFiles(project: Project) {
+        filePairMap.forEach() { (_, value) ->
+            WriteCommandAction.runWriteCommandAction(project) {
+                value.leftDoc().setText("")
+                value.rightDoc().setText("")
             }
         }
     }

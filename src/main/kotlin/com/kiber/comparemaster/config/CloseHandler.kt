@@ -8,14 +8,16 @@ import com.kiber.comparemaster.ui.ComponentsResolver
 class CloseHandler : ProjectCloseHandler {
 
     override fun canClose(project: Project): Boolean {
-        JsonEditorsFileManager.releaseFiles(project)
+        JsonEditorsFileManager.releaseAllFiles(project)
 
         val toolWindow = ComponentsResolver.getToolWindow(project)
         toolWindow.hide()
 
-        val panel = ComponentsResolver.getToolWindowPanel(project)
-        panel.editorFactory.releaseEditor(panel.leftEditor)
-        panel.editorFactory.releaseEditor(panel.rightEditor)
+        ComponentsResolver.getAllToolWindowPanels(project)
+            .forEach {panel ->
+                panel.editorFactory.releaseEditor(panel.leftEditor)
+                panel.editorFactory.releaseEditor(panel.rightEditor)
+            }
 
         return true
     }
