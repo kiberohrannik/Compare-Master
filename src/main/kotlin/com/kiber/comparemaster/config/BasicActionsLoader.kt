@@ -57,7 +57,7 @@ object BasicActionsLoader: ActionsLoader {
         )
 
         val replaceOnlyValuesAction = FilePairAction(
-            hint = "Replace existing values from left to right",
+            hint = "Replace field values from left to right",
             icon = null,
             function = ReplaceOnlyPresentValuesFunction()
         )
