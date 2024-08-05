@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.flipkart.zjsonpatch.JsonPatch
 
 class StepsOperation(
-    private val patchSteps: Collection<JsonPatchStep>,
+    internal val patchSteps: Collection<JsonPatchStep>,
     private var sourceNode: JsonNode
 ) {
     fun apply(op: (Collection<JsonPatchStep>, JsonNode) -> StepsOperation): StepsOperation =
@@ -16,5 +16,3 @@ class StepsOperation(
         return patched.toString()
     }
 }
-
-
