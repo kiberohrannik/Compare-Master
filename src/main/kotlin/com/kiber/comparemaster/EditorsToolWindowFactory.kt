@@ -3,8 +3,8 @@ package com.kiber.comparemaster
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowFactory
+import com.intellij.openapi.wm.ex.ToolWindowEx
 import com.kiber.comparemaster.action.CreateNewTabAction
-import com.kiber.comparemaster.action.ShowDiffAction
 import com.kiber.comparemaster.config.PluginConfigurationProcessor
 import com.kiber.comparemaster.config.SideMenuManager
 import com.kiber.comparemaster.config.TopMenuManager
@@ -28,6 +28,6 @@ class EditorsToolWindowFactory: ToolWindowFactory {
 
         TabFactory.createTab(project, toolWindow)
 
-        toolWindow.setTitleActions(mutableListOf(ShowDiffAction(), CreateNewTabAction()))
+        (toolWindow as ToolWindowEx).setTabActions(CreateNewTabAction())
     }
 }

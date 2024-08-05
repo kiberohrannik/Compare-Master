@@ -10,7 +10,9 @@ import javax.swing.SwingConstants
 
 object EditorsToolbarFactory {
 
-    fun createToolbar(actions: List<PluginAction>, targetComponent: ToolWindowPanel): ActionToolbar {
+    fun createToolbar(actions: List<PluginAction>,
+                      targetComponent: ToolWindowPanel,
+                      orientation: Int = SwingConstants.VERTICAL): ActionToolbar {
         val group = RunToolbarMoreActionGroup()
         actions.forEach {
             group.add(it)
@@ -18,7 +20,7 @@ object EditorsToolbarFactory {
         }
 
         val toolbar = ActionManager.getInstance().createActionToolbar(ActionPlaces.PROJECT_VIEW_TOOLBAR, group, false)
-        toolbar.setOrientation(SwingConstants.VERTICAL)
+        toolbar.setOrientation(orientation)
         toolbar.targetComponent = targetComponent
 
         return toolbar

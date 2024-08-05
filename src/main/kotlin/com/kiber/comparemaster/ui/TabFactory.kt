@@ -1,7 +1,6 @@
 package com.kiber.comparemaster.ui
 
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.wm.IdeFocusManager
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.ui.content.ContentFactory
 import com.kiber.comparemaster.ToolWindowPanel
@@ -20,8 +19,6 @@ object TabFactory {
 
             toolWindow.contentManager.addContent(content)
             toolWindow.contentManager.setSelectedContent(content)
-
-            IdeFocusManager.getInstance(project).requestFocus(panel.leftEditor.component, true)
         }
     }
 }

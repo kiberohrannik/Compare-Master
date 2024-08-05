@@ -34,6 +34,7 @@ class ToolWindowPanel(project: Project) : JPanel(BorderLayout()) {
         val actionList: MutableList<PluginAction> = mutableListOf()
         actionList.addAll(SideMenuManager.getActions())
         actionList.addAll(SideMenuManager.getPopups())
+        actionList.addAll(SideMenuManager.getOtherActions())
 
         val toolbar = EditorsToolbarFactory.createToolbar(actionList, this)
         add(BorderLayout.WEST, toolbar.component)

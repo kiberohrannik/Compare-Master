@@ -11,6 +11,7 @@ object IconManager {
     val replaceOnlyValues: Icon = load("icons/replace-values.svg")
     val formatText: Icon = load("icons/format.svg")
     val inlineText: Icon = load("icons/inline.svg")
+    val showDiff: Icon = load("icons/diff.svg")
 
     private fun load(path: String): Icon {
         return IconLoader.getIcon(path, this.javaClass.classLoader)

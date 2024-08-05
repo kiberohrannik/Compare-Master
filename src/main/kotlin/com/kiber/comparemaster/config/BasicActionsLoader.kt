@@ -14,13 +14,9 @@ import com.kiber.comparemaster.ui.IconManager
 object BasicActionsLoader: ActionsLoader {
 
     override fun load() {
-        setupTopMenu()
         setupSideMenu()
     }
 
-    private fun setupTopMenu() {
-        TopMenuManager.add(ShowDiffAction())
-    }
 
     private fun setupSideMenu() {
         val clearAction = FilePairAction(
@@ -78,7 +74,10 @@ object BasicActionsLoader: ActionsLoader {
             actions = listOf(replaceOnlyValuesAction, addAbsentValuesAction)
         )
 
-        SideMenuManager.add(clearAction, copyAction, swapAction, sortAction, formatJsonFunction, inlineJsonFunction)
+        val showDiffAction = ShowDiffAction()
+
+        SideMenuManager.add(clearAction, copyAction, swapAction, sortAction, formatJsonFunction, inlineJsonFunction, )
         SideMenuManager.add(popupAction)
+        SideMenuManager.add(showDiffAction)
     }
 }

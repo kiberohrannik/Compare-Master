@@ -4,7 +4,7 @@ import com.intellij.icons.AllIcons
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.kiber.comparemaster.ui.ComponentsResolver
 
-class CreateNewTabAction : PluginAction("Create new tab", "", AllIcons.Actions.NewFolder) {
+class CreateNewTabAction : PluginAction("Create new tab", "", AllIcons.General.Add) {
 
     override fun actionPerformed(event: AnActionEvent) {
         ComponentsResolver.addToolWindowTab(getProject(event))
