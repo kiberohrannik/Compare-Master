@@ -22,7 +22,7 @@ Tool window with 2 editors for JSON processing and comparison.
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow id="C-Master" anchor="right" factoryClass="com.kiber.comparemaster.EditorsToolWindowFactory"/>
+        <toolWindow id="C-Master" anchor="right" factoryClass="com.kiber.comparemaster.EditorsToolWindowFactory" canCloseContents="true"/>
         <annotator language="JSON" implementationClass="com.intellij.json.codeinsight.JsonLiteralAnnotator"/>
         <lang.syntaxHighlighter implementationClass="com.intellij.jsonpath.JsonPathSyntaxHighlighter" language="JSON"/>
         <projectCloseHandler implementation="com.kiber.comparemaster.config.CloseHandler"/>
