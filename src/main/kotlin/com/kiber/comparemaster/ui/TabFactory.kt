@@ -12,12 +12,14 @@ object TabFactory {
     private val tabsIterator: Iterator<String> = TABS.iterator()
 
     fun createTab(project: Project, toolWindow: ToolWindow) {
+
         if(tabsIterator.hasNext()) {
             val tabName = tabsIterator.next()
             val panel = ToolWindowPanel(project)
             val content = ContentFactory.getInstance().createContent(panel, tabName, false)
-            content.isSelected
+
             toolWindow.contentManager.addContent(content)
+            toolWindow.contentManager.setSelectedContent(content)
 
             IdeFocusManager.getInstance(project).requestFocus(panel.leftEditor.component, true)
         }
