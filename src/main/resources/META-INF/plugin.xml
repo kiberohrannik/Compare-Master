@@ -15,8 +15,7 @@ Tool window with 2 editors for JSON processing and comparison.
     <change-notes><![CDATA[
 <h2>New Features</h2>
 <ul>
-  <li>Added multi-tab support</li>
-  <li>'Show differences' function has been moved closer, to the side menu</li>
+  <li>Added support of latest EAP IDE versions</li>
 </ul>
 
 <h2>Bug Fixes</h2>
