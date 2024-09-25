@@ -36,7 +36,7 @@ class PluginConfigurationProcessor {
             .map { p -> p.name }
 
         return this::class.java.classLoader.scanForClasses(*packages.toTypedArray())
-            .filter { clazz -> clazz.isKotlinClass() && ActionsLoader::class.java.isAssignableFrom((clazz)) }
+            .filter { clazz -> ActionsLoader::class.java.isAssignableFrom((clazz)) }
             .map { clazz -> clazz.kotlin }
             .filter { clazz -> clazz.hasAnnotation<PluginConfiguration>() }
             .toCollection(mutableListOf())

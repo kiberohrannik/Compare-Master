@@ -2,7 +2,7 @@
 <idea-plugin>
     <id>com.kiber.CompareMaster</id>
     <name>CompareMaster</name>
-    <version>1.1.14</version>
+    <version>1.2.0</version>
 
     <vendor email="kiberdevv@gmail.com">Victoria Kulyk</vendor>
 
@@ -26,6 +26,7 @@ Tool window with 2 editors for JSON processing and comparison.
 ]]></change-notes>
 
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.json</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <toolWindow id="C-Master" anchor="right" factoryClass="com.kiber.comparemaster.EditorsToolWindowFactory" canCloseContents="true"/>
