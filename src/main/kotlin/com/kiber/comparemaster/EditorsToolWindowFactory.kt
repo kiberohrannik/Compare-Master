@@ -5,6 +5,8 @@ import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowFactory
 import com.intellij.openapi.wm.ex.ToolWindowEx
 import com.kiber.comparemaster.action.CreateNewTabAction
+import com.kiber.comparemaster.action.filetypes.JsonFileTypeAction
+import com.kiber.comparemaster.action.filetypes.XmlFileTypeAction
 import com.kiber.comparemaster.config.PluginConfigurationProcessor
 import com.kiber.comparemaster.config.SideMenuManager
 import com.kiber.comparemaster.config.TopMenuManager
@@ -25,6 +27,16 @@ class EditorsToolWindowFactory: ToolWindowFactory {
 
         TopMenuManager.sealed = true
         SideMenuManager.sealed = true
+
+
+
+
+        toolWindow.setTitleActions(mutableListOf(
+            XmlFileTypeAction(toolWindow),
+            JsonFileTypeAction(toolWindow)
+        ))
+
+
 
         TabFactory.createTab(project, toolWindow)
 

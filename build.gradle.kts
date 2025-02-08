@@ -26,15 +26,18 @@ repositories {
 dependencies {
     intellijPlatform {
 
-        intellijIdeaUltimate("243.15521.24")
+//        intellijIdeaUltimate("243.15521.24")
+//        intellijIdeaCommunity("2024.3.2.1", useInstaller = true)
+        intellijIdeaCommunity("2023.3.2", useInstaller = false)
 
         implementation(kotlin("stdlib"))
 
 
-        bundledPlugin("com.intellij.modules.json")
-        bundledPlugin("com.intellij.jsonpath")
+        //TODO resolve issues with it !!!
+//        bundledPlugin("com.intellij.modules.json")
+//        bundledPlugin("com.intellij.jsonpath")
 
-        pluginVerifier()
+//        pluginVerifier()
         zipSigner()
         instrumentationTools()
 

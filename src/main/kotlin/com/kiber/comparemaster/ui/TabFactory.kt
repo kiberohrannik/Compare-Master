@@ -4,23 +4,36 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.ui.content.ContentFactory
 import com.kiber.comparemaster.ToolWindowPanel
+import com.kiber.comparemaster.content.file.DefaultEditorsFileManager
+import com.kiber.comparemaster.content.file.EFileTypes
 
 object TabFactory {
 
     private const val MAX_TAB_NUMBER = 9
 
-    private var counterMap: MutableMap<String, Int> = mutableMapOf()
+    private var counterMap: MutableMap<String, TabContext> = mutableMapOf()
 
 
     fun createTab(project: Project, toolWindow: ToolWindow) {
-        counterMap.putIfAbsent(project.name, 1)
-
         if (canAddNewTab(toolWindow)) {
-            val tabNumber = counterMap[project.name]!!
-            val tabName = "TAB-$tabNumber"
-            counterMap[project.name] = tabNumber + 1
+            val fileType = resolveFileType()
+            val filesPrefix = DefaultEditorsFileManager.createFilePair(fileType)
 
-            val panel = ToolWindowPanel(project)
+            counterMap.putIfAbsent(
+                project.name, TabContext(
+                    tabNumber = 1,
+                    timestampAdded = System.currentTimeMillis(),
+                    filesPrefix = filesPrefix
+                )
+            )
+
+            val tabNumber = counterMap[project.name]!!.tabNumber
+            val tabName = "TAB-$tabNumber"
+            counterMap[project.name]!!.tabNumber = tabNumber.inc()
+
+            val panel = ToolWindowPanel(project, filesPrefix)
+            panel.name = filesPrefix.toString()
+
             val content = ContentFactory.getInstance().createContent(panel, tabName, false)
             content.isCloseable = true
 
@@ -39,4 +52,21 @@ object TabFactory {
             .map { c -> c.component }
             .filterIsInstance<ToolWindowPanel>()
             .count() < MAX_TAB_NUMBER
+
+    private fun resolveFileType(): EFileTypes =
+        if (counterMap.isNotEmpty()) {
+            val prefix = counterMap.values.find {
+                it.timestampAdded == counterMap.maxOf { entry -> entry.value.timestampAdded }
+            }!!.filesPrefix
+
+            DefaultEditorsFileManager.getFilePairType(prefix) ?: EFileTypes.JSON
+        } else {
+            EFileTypes.JSON
+        }
 }
+
+data class TabContext(
+    var tabNumber: Int,
+    val timestampAdded: Long,
+    val filesPrefix: Long
+)

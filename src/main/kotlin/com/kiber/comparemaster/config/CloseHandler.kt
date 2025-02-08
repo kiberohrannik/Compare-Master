@@ -2,14 +2,14 @@ package com.kiber.comparemaster.config
 
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.ProjectCloseHandler
-import com.kiber.comparemaster.content.file.JsonEditorsFileManager
+import com.kiber.comparemaster.content.file.DefaultEditorsFileManager
 import com.kiber.comparemaster.ui.ComponentsResolver
 import com.kiber.comparemaster.ui.TabFactory
 
 class CloseHandler : ProjectCloseHandler {
 
     override fun canClose(project: Project): Boolean {
-        JsonEditorsFileManager.releaseAllFiles(project)
+        DefaultEditorsFileManager.releaseAllFiles(project)
 
         val toolWindow = ComponentsResolver.getToolWindow(project)
         toolWindow.hide()

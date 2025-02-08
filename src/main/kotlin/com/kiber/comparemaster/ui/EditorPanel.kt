@@ -11,7 +11,7 @@ object EditorPanel {
         return JPanel()
             .apply {
                 layout = BoxLayout(this, BoxLayout.PAGE_AXIS)
-                add(editor.component)
+                add("editor", editor.component)
                 for (button in buttons) {
                     add(button)
                 }
