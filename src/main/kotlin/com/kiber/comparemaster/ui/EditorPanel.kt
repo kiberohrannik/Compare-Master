@@ -7,11 +7,22 @@ import javax.swing.JPanel
 
 object EditorPanel {
 
-    fun create(editor: FileEditor, buttons: List<JButton> = listOf()): JPanel {
+    const val LEFT_PANEL_NAME = "leftPanel"
+    const val RIGHT_PANEL_NAME = "rightPanel"
+
+    fun createLeft(editor: FileEditor, buttons: List<JButton> = listOf()): JPanel =
+        create(LEFT_PANEL_NAME, editor, buttons)
+
+    fun createRight(editor: FileEditor, buttons: List<JButton> = listOf()): JPanel =
+        create(RIGHT_PANEL_NAME, editor, buttons)
+
+
+    private fun create(name: String, editor: FileEditor, buttons: List<JButton> = listOf()): JPanel {
         return JPanel()
             .apply {
+                this.name = name
                 layout = BoxLayout(this, BoxLayout.PAGE_AXIS)
-                add("editor", editor.component)
+                add(editor.component)
                 for (button in buttons) {
                     add(button)
                 }

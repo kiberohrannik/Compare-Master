@@ -5,9 +5,9 @@ import com.intellij.openapi.fileEditor.impl.text.PsiAwareTextEditorProvider
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 
-class DefaultEditorManager(project: Project) : FileEditorManager(project) {
+object DefaultEditorManager : FileEditorManager {
 
-    override fun createEditor(virtualFile: VirtualFile): FileEditor {
+    override fun createEditor(virtualFile: VirtualFile, project: Project): FileEditor {
         return PsiAwareTextEditorProvider().createEditor(project, virtualFile);
     }
 

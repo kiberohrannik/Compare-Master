@@ -29,7 +29,11 @@ object TabFactory {
 
             val tabNumber = counterMap[project.name]!!.tabNumber
             val tabName = "TAB-$tabNumber"
-            counterMap[project.name]!!.tabNumber = tabNumber.inc()
+            counterMap[project.name]!!.apply {
+                this.tabNumber = tabNumber.inc()
+                timestampAdded = System.currentTimeMillis()
+                this.filesPrefix = filesPrefix
+            }
 
             val panel = ToolWindowPanel(project, filesPrefix)
             panel.name = filesPrefix.toString()
@@ -63,10 +67,11 @@ object TabFactory {
         } else {
             EFileTypes.JSON
         }
+
+    private data class TabContext(
+        var tabNumber: Int,
+        var timestampAdded: Long,
+        var filesPrefix: Long
+    )
 }
 
-data class TabContext(
-    var tabNumber: Int,
-    val timestampAdded: Long,
-    val filesPrefix: Long
-)

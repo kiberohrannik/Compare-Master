@@ -4,6 +4,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.ProjectCloseHandler
 import com.kiber.comparemaster.content.file.DefaultEditorsFileManager
 import com.kiber.comparemaster.ui.ComponentsResolver
+import com.kiber.comparemaster.ui.DefaultEditorManager.releaseEditor
 import com.kiber.comparemaster.ui.TabFactory
 
 class CloseHandler : ProjectCloseHandler {
@@ -16,8 +17,8 @@ class CloseHandler : ProjectCloseHandler {
 
         ComponentsResolver.getAllToolWindowPanels(project)
             .forEach { panel ->
-                panel.editorFactory.releaseEditor(panel.leftEditor)
-                panel.editorFactory.releaseEditor(panel.rightEditor)
+                releaseEditor(panel.leftEditor)
+                releaseEditor(panel.rightEditor)
             }
 
         TabFactory.releaseTabs(project)

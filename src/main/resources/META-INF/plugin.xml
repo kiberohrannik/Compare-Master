@@ -40,8 +40,6 @@ Tool window with 2 editors for JSON processing and comparison.
         <projectCloseHandler implementation="com.kiber.comparemaster.config.CloseHandler"/>
     </extensions>
 
-    //  TODO check for com.intellij.xml.XmlSyntaxHighlighter
-
     //  check org.intellij.lang.xpath.XPathHighlighter
     //  check org.jetbrains.yaml.YAMLSyntaxHighlighter
 

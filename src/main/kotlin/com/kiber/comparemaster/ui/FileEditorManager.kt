@@ -4,9 +4,9 @@ import com.intellij.openapi.fileEditor.FileEditor
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 
-abstract class FileEditorManager(val project: Project) {
+interface FileEditorManager {
 
-    abstract fun createEditor(virtualFile: VirtualFile): FileEditor
+    fun createEditor(virtualFile: VirtualFile, project: Project): FileEditor
 
-    abstract fun releaseEditor(fileEditor: FileEditor)
+    fun releaseEditor(fileEditor: FileEditor)
 }

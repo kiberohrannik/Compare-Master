@@ -6,7 +6,6 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.openapi.vfs.findDocument
 
 data class FilePair(val prefix: Long,
-//                    internal val file1: EVirtualFile, internal val file2: EVirtualFile) {
                     internal val file1: EVirtualFile, internal val file2: EVirtualFile) {
 
     fun left(): VirtualFile = file1.internalFile
