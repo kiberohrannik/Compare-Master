@@ -6,8 +6,11 @@ import com.kiber.comparemaster.action.PopupAction
 import com.kiber.comparemaster.action.ShowDiffAction
 import com.kiber.comparemaster.function.ClearContentFunction
 import com.kiber.comparemaster.function.CopyContentFunction
+import com.kiber.comparemaster.function.FilePairFuncWrapper
 import com.kiber.comparemaster.function.SwapFilesFunction
 import com.kiber.comparemaster.function.json.*
+import com.kiber.comparemaster.function.xml.FormatXmlFunction
+import com.kiber.comparemaster.function.xml.InlineXmlFunction
 import com.kiber.comparemaster.ui.IconManager
 
 @PluginConfiguration
@@ -47,13 +50,15 @@ object BasicActionsLoader: ActionsLoader {
         val formatJsonFunction = FilePairAction(
             hint = "Format",
             icon = IconManager.formatText,
-            function = FormatJsonFunction,
+//            function = FormatJsonFunction,
+            function = FilePairFuncWrapper(FormatJsonFunction, FormatXmlFunction),
         )
 
         val inlineJsonFunction = FilePairAction(
             hint = "Inline",
             icon = IconManager.inlineText,
-            function = InlineJsonFunction,
+//            function = InlineJsonFunction,
+            function = FilePairFuncWrapper(InlineJsonFunction, InlineXmlFunction),
         )
 
         val replaceOnlyValuesAction = FilePairAction(

@@ -44,8 +44,16 @@ dependencies {
         testFramework(TestFrameworkType.Platform)
     }
 
+
+
+    //JSON
     implementation("com.flipkart.zjsonpatch:zjsonpatch:$jsonPatchVersion")
     implementation("org.json:json:$jsonLibVersion")
+
+    //XML
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.18.2")
+
+
     compileOnly("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
     compileOnly("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
 

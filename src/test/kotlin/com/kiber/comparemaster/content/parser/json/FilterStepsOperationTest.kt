@@ -1,16 +1,65 @@
 package com.kiber.comparemaster.content.parser.json
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.intellij.codeInsight.editorActions.XmlEditUtil
+import com.intellij.util.xmlb.XmlSerializerUtil
+import com.intellij.xml.util.XmlStringUtil
+import com.intellij.xml.util.XmlUtil
+import com.jetbrains.rd.util.string.printToString
+import com.kiber.comparemaster.json.XmlFormatter
 import com.kiber.comparemaster.util.JsonGenerator
+import groovy.xml.XmlNodePrinter
+import groovy.xml.XmlParser
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.equals.shouldBeEqual
 import io.kotest.matchers.equals.shouldNotBeEqual
 import io.kotest.matchers.shouldNotBe
+import org.codehaus.plexus.util.xml.PrettyPrintXMLWriter
+import org.codehaus.plexus.util.xml.XmlWriterUtil
+import java.io.ByteArrayOutputStream
+import java.io.PrintWriter
 
 //We are changing "source" json to "target" json
 class FilterStepsOperationTest : FunSpec({
 
     val mapper = ObjectMapper()
+
+    test("vfdvbfd") {
+        val xml = "<?xml version=\"1.0\"?>\n" +
+                "<customers>\n" +
+                "   <customer id=\"55000\">\n" +
+                "      <name>Charter Group</name>\n" +
+                "      <address>\n" +
+                "         <street>100 Main</street>\n" +
+                "         <city>Framingham</city>\n" +
+                "         <state>MA</state>\n" +
+                "         <zip>01701</zip>\n" +
+                "      </address>\n" +
+                "      <address>\n" +
+                "         <street>720 Prospect</street>\n" +
+                "         <city>Framingham</city>\n" +
+                "         <state>MA</state>\n" +
+                "         <zip>01701</zip>\n" +
+                "      </address>\n" +
+                "      <address>\n" +
+                "         <street>120 Ridge</street>\n" +
+                "         <state>MA</state>\n" +
+                "         <zip>01760</zip>\n" +
+                "      </address>\n" +
+                "   </customer>\n" +
+                "</customers>"
+
+        val res1 = XmlFormatter.toRawXml(xml)
+        println(res1)
+
+        println("\n\n")
+
+        val res2 = XmlFormatter.toPrettyXml(xml)
+        println(res2)
+    }
+
+
+
 
     test("should replace only existing values").config(invocations = 3) {
         val sourceObj = JsonGenerator.TestObject4()
