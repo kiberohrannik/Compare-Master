@@ -8,12 +8,18 @@ import com.kiber.comparemaster.ToolWindowPanel
 object TabFactory {
 
     private const val MAX_TAB_NUMBER = 9
-    private var counter = 0
+
+    private var counterMap: MutableMap<String, Int> = mutableMapOf()
+
 
     fun createTab(project: Project, toolWindow: ToolWindow) {
+        counterMap.putIfAbsent(project.name, 1)
 
-        if(canAddNewTab(toolWindow)) {
-            val tabName = "TAB-${++counter}"
+        if (canAddNewTab(toolWindow)) {
+            val tabNumber = counterMap[project.name]!!
+            val tabName = "TAB-$tabNumber"
+            counterMap[project.name] = tabNumber + 1
+
             val panel = ToolWindowPanel(project)
             val content = ContentFactory.getInstance().createContent(panel, tabName, false)
             content.isCloseable = true
@@ -21,6 +27,10 @@ object TabFactory {
             toolWindow.contentManager.addContent(content)
             toolWindow.contentManager.setSelectedContent(content)
         }
+    }
+
+    fun releaseTabs(project: Project) {
+        counterMap.remove(project.name)
     }
 
 
