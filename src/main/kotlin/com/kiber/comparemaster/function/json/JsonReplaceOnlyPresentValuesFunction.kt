@@ -32,7 +32,7 @@ import com.kiber.comparemaster.json.JsonFormatter
  *  |  ]                     |                   |    |  ]                     |  ]                   |
  *  * --------------------------------------------    -------------------------------------------------
  */
-class ReplaceOnlyPresentValuesFunction : JsonFilePairFunction {
+class JsonReplaceOnlyPresentValuesFunction : JsonFilePairFunction {
 
     override fun apply(filePair: FilePair, project: Project) {
         //left is target

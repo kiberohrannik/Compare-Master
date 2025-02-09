@@ -10,6 +10,7 @@ object XmlFormatter {
     private val parser = XmlParser(false, false)
 
     fun toPrettyXml(xml: String): String {
+        validateXmlType(xml)
         return if (xml.isBlank()) {
             xml
         } else {
@@ -18,6 +19,7 @@ object XmlFormatter {
     }
 
     fun toRawXml(xml: String): String {
+        validateXmlType(xml)
         return if (xml.isBlank()) {
             xml
         } else {
@@ -30,6 +32,7 @@ object XmlFormatter {
 
     //TODO add sorting by attribute values
     fun toSortedXml(xml: String): String {
+        validateXmlType(xml)
         return if (xml.isBlank()) {
             xml
         } else {
@@ -41,7 +44,7 @@ object XmlFormatter {
         }
     }
 
-
+    //TODO refactor it
     private fun sortChildren(node: Node) {
         node.children()
             .sortedBy { ch ->
@@ -68,6 +71,12 @@ object XmlFormatter {
             }
         node.children().clear()
         node.children().addAll(sortedChildren)
+    }
+
+    private fun validateXmlType(xml: String) {
+        if (xml.contains("<!DOCTYPE")) {
+            throw Exception("DOCTYPEs are not supported yet !!")
+        }
     }
 
     private fun prettyPrint(parsed: Node) = XmlUtil.serialize(parsed)

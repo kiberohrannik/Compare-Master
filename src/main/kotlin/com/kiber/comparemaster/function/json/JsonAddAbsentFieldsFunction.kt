@@ -31,7 +31,7 @@ import com.kiber.comparemaster.json.JsonFormatter
  *  |  ]                     |                   |    |  ]                     |  ]                   |
  *  * --------------------------------------------    -------------------------------------------------
  */
-class AddAbsentFieldsFunction: JsonFilePairFunction {
+class JsonAddAbsentFieldsFunction: JsonFilePairFunction {
 
     override fun apply(filePair: FilePair, project: Project) {
         //left is target

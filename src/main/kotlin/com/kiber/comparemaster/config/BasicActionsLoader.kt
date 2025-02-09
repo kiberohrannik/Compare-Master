@@ -9,9 +9,7 @@ import com.kiber.comparemaster.function.CopyContentFunction
 import com.kiber.comparemaster.function.FilePairFuncWrapper
 import com.kiber.comparemaster.function.SwapFilesFunction
 import com.kiber.comparemaster.function.json.*
-import com.kiber.comparemaster.function.xml.FormatXmlFunction
-import com.kiber.comparemaster.function.xml.InlineXmlFunction
-import com.kiber.comparemaster.function.xml.SortXmlFunction
+import com.kiber.comparemaster.function.xml.*
 import com.kiber.comparemaster.ui.IconManager
 
 @PluginConfiguration
@@ -66,13 +64,13 @@ object BasicActionsLoader: ActionsLoader {
         val replaceOnlyValuesAction = FilePairAction(
             hint = "Replace field values from left to right",
             icon = null,
-            function = ReplaceOnlyPresentValuesFunction()
+            function = FilePairFuncWrapper(JsonReplaceOnlyPresentValuesFunction(), XmlReplaceOnlyPresentValuesFunction())
         )
 
         val addAbsentValuesAction = FilePairAction(
             hint = "Add absent values from left to right",
             icon = null,
-            function = AddAbsentFieldsFunction()
+            function = FilePairFuncWrapper(JsonAddAbsentFieldsFunction(), XmlAddAbsentFieldsFunction())
         )
 
         val popupAction = PopupAction(
