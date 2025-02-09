@@ -13,26 +13,14 @@ object XmlFormatter {
 
     fun toPrettyXml(xml: String): String {
         validateXmlType(xml)
-        return if (xml.isBlank()) {
-            xml
-        } else {
-            prettyPrint(parser.parseText(xml))
-        }
+        return if (xml.isBlank()) xml else prettyPrint(parser.parseText(xml))
     }
 
     fun toRawXml(xml: String): String {
         validateXmlType(xml)
-        return if (xml.isBlank()) {
-            xml
-        } else {
-            val parsed = parser.parseText(xml)
-            return XmlUtil.serialize(parsed)
-                .replace(Regex("\\n\\s*\\n"), "")
-                .replace(Regex(">\\s*<"), "><")
-        }
+        return if (xml.isBlank()) xml else rawPrint(parser.parseText(xml))
     }
 
-    //TODO add sorting by attribute values
     fun toSortedXml(xml: String): String {
         validateXmlType(xml)
         return if (xml.isBlank()) {
@@ -46,16 +34,9 @@ object XmlFormatter {
         }
     }
 
-    //TODO refactor it
     private fun sortChildren(node: Node) {
         node.children()
-            .sortedBy { ch ->
-                if (ch is Node) {
-                    ch.name() as String
-                } else {
-                    ""
-                }
-            }
+            .sortedBy { sortByName(it) }
             .forEach { child ->
                 if (child is Node) {
                     sortChildren(child)
@@ -63,69 +44,33 @@ object XmlFormatter {
             }
 
         // Sort the current node's children and update the node
-        var sortedChildren = node.children()
-            .sortedBy { ch ->
-                if (ch is Node) {
-                    ch.name() as String
-                } else {
-                    ""
-                }
-            }
 
-        val sortedChildren1 = sortedChildren
-            .groupBy { ch ->
-                if (ch is Node) {
-                    ch.name() as String
-                } else {
-                    ch.hashCode().toString()
-                }
-            }.toSortedMap()
-            .map { entry ->
+        val groupedByTag = node.children()
+            //Group by tag name and sort
+            .groupBy { groupByName(it) }
+            .toSortedMap()
 
-               entry.key to entry.value
-                    .groupBy { ch ->
-                    if (ch is Node && ch.attributes().isNotEmpty()) {
-                        ch.attributes().first().key as String
-                    } else {
-                        ch.hashCode().toString()
-                    }
+        val withSortedAttrs = groupedByTag.map { entry ->
+            entry.key to entry.value
 
-                }.toSortedMap()
-                    .flatMap { attrEntry ->
-                        attrEntry.value.sortedBy { ch ->
-                            if (ch is Node) {
-                                ch.attributes().first().value as String
-                            } else {
-                                ch.hashCode().toString()
-                                    .also { println("Hashcode $it") }
-                            }
-                        }
-                    }
+                //Group by attribute name and sort (when have same tag name)
+                .groupBy { groupByAttribute(it) }
+                .toSortedMap()
 
-            }.flatMap { entry -> entry.second
-                .sortedBy { tag ->
-                    if(tag is Node) {
-//                        if(tag.attributes().isEmpty() && tag.value() !is Node && tag.value() !is NodeList) {
-                        if(tag.attributes().isEmpty() && tag.value() is NodeList) {
-                            val nodeList = (tag.value() as NodeList)
-                                    if(nodeList.isNotEmpty()) {
-                                        nodeList.first() as String
-                                    } else {
-                                        ""
-                                    }
-
-                        } else {
-                            ""
-                        }
-                    } else {
-                        ""
+                //Sort by attribute value (when have same attribute name)
+                .flatMap { attrEntry ->
+                    attrEntry.value.sortedBy { child ->
+                        sortByAttribute(child)
                     }
                 }
+        }
 
-            }
+        val sortedChildren = withSortedAttrs.flatMap { entry ->
+            entry.second.sortedBy { sortByTagValue(it) }
+        }
 
         node.children().clear()
-        node.children().addAll(sortedChildren1)
+        node.children().addAll(sortedChildren)
     }
 
     private fun validateXmlType(xml: String) {
@@ -137,4 +82,50 @@ object XmlFormatter {
     private fun prettyPrint(parsed: Node) = XmlUtil.serialize(parsed)
         .replace(Regex("\\n\\s*\\n"), "\n")
         .replace("?>", "?>\n")
+
+    private fun rawPrint(parsed: Node) = XmlUtil.serialize(parsed)
+        .replace(Regex("\\n\\s*\\n"), "")
+        .replace(Regex(">\\s*<"), "><")
+
+
+    private fun sortByName(value: Any?): String =
+        if (value is Node) {
+            value.name() as String
+        } else {
+            ""
+        }
+
+    private fun sortByAttribute(value: Any?): String =
+        if (value is Node) {
+            value.attributes().first().value as String
+        } else {
+            value.hashCode().toString()
+        }
+
+    private fun sortByTagValue(value: Any?): String {
+        var value4Sorting = ""
+        //If tag has no attributes, we sort by tag value
+        if (value is Node && value.attributes().isEmpty() && value.value() is NodeList) {
+            val nodeList = (value.value() as NodeList)
+            if (nodeList.isNotEmpty()) {
+                value4Sorting = nodeList.first() as String
+            }
+        }
+        return value4Sorting
+    }
+
+
+    private fun groupByName(value: Any?): String =
+        if (value is Node) {
+            value.name() as String
+        } else {
+            value.hashCode().toString()
+        }
+
+    private fun groupByAttribute(value: Any?): String =
+        if (value is Node && value.attributes().isNotEmpty()) {
+            value.attributes().first().key as String
+        } else {
+            value.hashCode().toString()
+        }
 }
