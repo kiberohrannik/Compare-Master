@@ -1,6 +1,8 @@
 package com.kiber.comparemaster.json
 
+import com.jetbrains.rd.util.first
 import groovy.util.Node
+import groovy.util.NodeList
 import groovy.xml.XmlParser
 import groovy.xml.XmlUtil
 
@@ -61,7 +63,7 @@ object XmlFormatter {
             }
 
         // Sort the current node's children and update the node
-        val sortedChildren = node.children()
+        var sortedChildren = node.children()
             .sortedBy { ch ->
                 if (ch is Node) {
                     ch.name() as String
@@ -69,8 +71,61 @@ object XmlFormatter {
                     ""
                 }
             }
+
+        val sortedChildren1 = sortedChildren
+            .groupBy { ch ->
+                if (ch is Node) {
+                    ch.name() as String
+                } else {
+                    ch.hashCode().toString()
+                }
+            }.toSortedMap()
+            .map { entry ->
+
+               entry.key to entry.value
+                    .groupBy { ch ->
+                    if (ch is Node && ch.attributes().isNotEmpty()) {
+                        ch.attributes().first().key as String
+                    } else {
+                        ch.hashCode().toString()
+                    }
+
+                }.toSortedMap()
+                    .flatMap { attrEntry ->
+                        attrEntry.value.sortedBy { ch ->
+                            if (ch is Node) {
+                                ch.attributes().first().value as String
+                            } else {
+                                ch.hashCode().toString()
+                                    .also { println("Hashcode $it") }
+                            }
+                        }
+                    }
+
+            }.flatMap { entry -> entry.second
+                .sortedBy { tag ->
+                    if(tag is Node) {
+//                        if(tag.attributes().isEmpty() && tag.value() !is Node && tag.value() !is NodeList) {
+                        if(tag.attributes().isEmpty() && tag.value() is NodeList) {
+                            val nodeList = (tag.value() as NodeList)
+                                    if(nodeList.isNotEmpty()) {
+                                        nodeList.first() as String
+                                    } else {
+                                        ""
+                                    }
+
+                        } else {
+                            ""
+                        }
+                    } else {
+                        ""
+                    }
+                }
+
+            }
+
         node.children().clear()
-        node.children().addAll(sortedChildren)
+        node.children().addAll(sortedChildren1)
     }
 
     private fun validateXmlType(xml: String) {
