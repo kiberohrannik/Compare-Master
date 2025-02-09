@@ -3,6 +3,7 @@ package com.kiber.comparemaster.content.file
 import com.intellij.ide.highlighter.XmlFileType
 import com.intellij.json.JsonFileType
 import com.intellij.openapi.command.WriteCommandAction
+import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiDocumentManager
 import com.intellij.testFramework.LightVirtualFile
@@ -89,7 +90,7 @@ object DefaultEditorsFileManager : EditorsFileManager {
         val pair = filePairMap[prefix]
         if (pair != null) {
             WriteCommandAction.runWriteCommandAction(project) {
-                if(!project.isDisposed) {
+                if (!project.isDisposed) {
                     pair.leftDoc().setText("")
                     pair.rightDoc().setText("")
                 }
@@ -100,9 +101,12 @@ object DefaultEditorsFileManager : EditorsFileManager {
     override fun releaseAllFiles(project: Project) {
         filePairMap.forEach() { (_, value) ->
             WriteCommandAction.runWriteCommandAction(project) {
-                if(!project.isDisposed) {
-                    value.leftDoc().setText("")
-                    value.rightDoc().setText("")
+                val indicator = ProgressManager.getInstance().progressIndicator
+                if (indicator?.isCanceled == false) {
+                    if (!project.isDisposed) {
+                        value.leftDoc().setText("")
+                        value.rightDoc().setText("")
+                    }
                 }
             }
         }
