@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "com.kiber"
-version = "2.0.4"
+version = "2.0.1"
 
 val jsonPatchVersion = "0.4.16"
 val jsonLibVersion = "20231013"
