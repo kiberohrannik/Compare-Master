@@ -13,7 +13,7 @@ import com.kiber.comparemaster.function.xml.*
 import com.kiber.comparemaster.ui.IconManager
 
 @PluginConfiguration
-object BasicActionsLoader: ActionsLoader {
+object BasicActionsLoader : ActionsLoader {
 
     override fun load() {
         setupSideMenu()
@@ -42,7 +42,6 @@ object BasicActionsLoader: ActionsLoader {
         val sortAction = FilePairAction(
             hint = "Sort",
             icon = AllIcons.ObjectBrowser.Sorted,
-//            function = SortJsonFunction
             function = FilePairFuncWrapper(SortJsonFunction, SortXmlFunction)
         )
 
@@ -50,21 +49,22 @@ object BasicActionsLoader: ActionsLoader {
         val formatJsonFunction = FilePairAction(
             hint = "Format",
             icon = IconManager.formatText,
-//            function = FormatJsonFunction,
             function = FilePairFuncWrapper(FormatJsonFunction, FormatXmlFunction),
         )
 
         val inlineJsonFunction = FilePairAction(
             hint = "Inline",
             icon = IconManager.inlineText,
-//            function = InlineJsonFunction,
             function = FilePairFuncWrapper(InlineJsonFunction, InlineXmlFunction),
         )
 
         val replaceOnlyValuesAction = FilePairAction(
             hint = "Replace field values from left to right",
             icon = null,
-            function = FilePairFuncWrapper(JsonReplaceOnlyPresentValuesFunction(), XmlReplaceOnlyPresentValuesFunction())
+            function = FilePairFuncWrapper(
+                JsonReplaceOnlyPresentValuesFunction(),
+                XmlReplaceOnlyPresentValuesFunction()
+            )
         )
 
         val addAbsentValuesAction = FilePairAction(
@@ -81,7 +81,7 @@ object BasicActionsLoader: ActionsLoader {
 
         val showDiffAction = ShowDiffAction()
 
-        SideMenuManager.add(clearAction, copyAction, swapAction, sortAction, formatJsonFunction, inlineJsonFunction, )
+        SideMenuManager.add(clearAction, copyAction, swapAction, sortAction, formatJsonFunction, inlineJsonFunction)
         SideMenuManager.add(popupAction)
         SideMenuManager.add(showDiffAction)
     }

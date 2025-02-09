@@ -28,19 +28,19 @@ Tool window with 2 editors for JSON processing and comparison.
     <depends>com.intellij.modules.json</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow id="C-Master" anchor="right" factoryClass="com.kiber.comparemaster.EditorsToolWindowFactory" canCloseContents="true"/>
+        <toolWindow id="C-Master" anchor="right" factoryClass="com.kiber.comparemaster.EditorsToolWindowFactory"
+                    canCloseContents="true"/>
 
         <annotator language="JSON" implementationClass="com.intellij.json.codeinsight.JsonLiteralAnnotator"/>
         <lang.syntaxHighlighter implementationClass="com.intellij.jsonpath.JsonPathSyntaxHighlighter" language="JSON"/>
 
-        <annotator language="XML" implementationClass="com.intellij.codeInsight.daemon.impl.analysis.XmlNsPrefixAnnotator"/>
-        <annotator language="XML" implementationClass="com.intellij.codeInsight.daemon.impl.analysis.XmlNamespaceAnnotator"/>
-        <lang.syntaxHighlighterFactory implementationClass="com.intellij.lang.xml.XmlSyntaxHighlighterFactory" language="XML"/>
+        <annotator language="XML"
+                   implementationClass="com.intellij.codeInsight.daemon.impl.analysis.XmlNsPrefixAnnotator"/>
+        <annotator language="XML"
+                   implementationClass="com.intellij.codeInsight.daemon.impl.analysis.XmlNamespaceAnnotator"/>
+        <lang.syntaxHighlighterFactory implementationClass="com.intellij.lang.xml.XmlSyntaxHighlighterFactory"
+                                       language="XML"/>
 
         <projectCloseHandler implementation="com.kiber.comparemaster.config.CloseHandler"/>
     </extensions>
-
-    //  check org.intellij.lang.xpath.XPathHighlighter
-    //  check org.jetbrains.yaml.YAMLSyntaxHighlighter
-
 </idea-plugin>
