@@ -11,6 +11,7 @@ import com.kiber.comparemaster.function.SwapFilesFunction
 import com.kiber.comparemaster.function.json.*
 import com.kiber.comparemaster.function.xml.FormatXmlFunction
 import com.kiber.comparemaster.function.xml.InlineXmlFunction
+import com.kiber.comparemaster.function.xml.SortXmlFunction
 import com.kiber.comparemaster.ui.IconManager
 
 @PluginConfiguration
@@ -43,7 +44,8 @@ object BasicActionsLoader: ActionsLoader {
         val sortAction = FilePairAction(
             hint = "Sort",
             icon = AllIcons.ObjectBrowser.Sorted,
-            function = SortJsonFunction
+//            function = SortJsonFunction
+            function = FilePairFuncWrapper(SortJsonFunction, SortXmlFunction)
         )
 
 
