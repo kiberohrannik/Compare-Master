@@ -10,19 +10,23 @@ import com.kiber.comparemaster.ui.TabFactory
 class CloseHandler : ProjectCloseHandler {
 
     override fun canClose(project: Project): Boolean {
-        DefaultEditorsFileManager.releaseAllFiles(project)
+        if (!project.isDisposed) {
+            DefaultEditorsFileManager.releaseAllFiles(project)
 
-        val toolWindow = ComponentsResolver.getToolWindow(project)
-        toolWindow.hide()
+            val toolWindow = ComponentsResolver.getToolWindow(project)
+            toolWindow.hide()
 
-        ComponentsResolver.getAllToolWindowPanels(project)
-            .forEach { panel ->
-                releaseEditor(panel.leftEditor)
-                releaseEditor(panel.rightEditor)
-            }
+            ComponentsResolver.getAllToolWindowPanels(project)
+                .forEach { panel ->
+                    releaseEditor(panel.leftEditor)
+                    releaseEditor(panel.rightEditor)
+                }
 
-        TabFactory.releaseTabs(project)
+            TabFactory.releaseTabs(project)
 
-        return true
+            return true
+        }
+
+        return false
     }
 }

@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "com.kiber"
-version = "1.2.0"
+version = "2.0.4"
 
 val jsonPatchVersion = "0.4.16"
 val jsonLibVersion = "20231013"
@@ -26,33 +26,20 @@ repositories {
 dependencies {
     intellijPlatform {
 
-//        intellijIdeaUltimate("243.15521.24")
-//        intellijIdeaCommunity("2024.3.2.1", useInstaller = true)
         intellijIdeaCommunity("2023.3.2", useInstaller = false)
 
         implementation(kotlin("stdlib"))
 
-
-        //TODO resolve issues with it !!!
-//        bundledPlugin("com.intellij.modules.json")
-//        bundledPlugin("com.intellij.jsonpath")
-
-//        pluginVerifier()
+        pluginVerifier()
         zipSigner()
         instrumentationTools()
 
         testFramework(TestFrameworkType.Platform)
     }
 
-
-
     //JSON
     implementation("com.flipkart.zjsonpatch:zjsonpatch:$jsonPatchVersion")
     implementation("org.json:json:$jsonLibVersion")
-
-    //XML
-    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.18.2")
-
 
     compileOnly("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
     compileOnly("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
@@ -76,7 +63,7 @@ tasks {
 
     patchPluginXml {
         sinceBuild.set("231")
-        untilBuild.set("243.*")
+        untilBuild.set("251.*")
     }
 
     signPlugin {

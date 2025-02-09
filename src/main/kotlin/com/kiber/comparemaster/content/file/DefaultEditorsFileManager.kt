@@ -64,6 +64,8 @@ object DefaultEditorsFileManager : EditorsFileManager {
             val oldLeftContent = filePairMap[prefix]?.leftText(false)
             val oldRightContent = filePairMap[prefix]?.rightText(false)
 
+            releaseFiles(prefix, project)
+
             filePairMap[prefix]?.file1?.internalFile = LightVirtualFile(oldName1, type, "")
             filePairMap[prefix]?.file2?.internalFile = LightVirtualFile(oldName2, type, "")
 
@@ -87,8 +89,10 @@ object DefaultEditorsFileManager : EditorsFileManager {
         val pair = filePairMap[prefix]
         if (pair != null) {
             WriteCommandAction.runWriteCommandAction(project) {
-                pair.leftDoc().setText("")
-                pair.rightDoc().setText("")
+                if(!project.isDisposed) {
+                    pair.leftDoc().setText("")
+                    pair.rightDoc().setText("")
+                }
             }
         }
     }
@@ -96,8 +100,10 @@ object DefaultEditorsFileManager : EditorsFileManager {
     override fun releaseAllFiles(project: Project) {
         filePairMap.forEach() { (_, value) ->
             WriteCommandAction.runWriteCommandAction(project) {
-                value.leftDoc().setText("")
-                value.rightDoc().setText("")
+                if(!project.isDisposed) {
+                    value.leftDoc().setText("")
+                    value.rightDoc().setText("")
+                }
             }
         }
     }
