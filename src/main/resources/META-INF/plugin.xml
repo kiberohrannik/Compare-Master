@@ -2,7 +2,7 @@
 <idea-plugin>
     <id>com.kiber.CompareMaster</id>
     <name>CompareMaster</name>
-    <version>2.0.1</version>
+    <version>2.0.2</version>
 
     <vendor email="kiberdevv@gmail.com">Victoria Kulyk</vendor>
 
