@@ -3,7 +3,7 @@
 
 
 
-### [Jet Brains IDE plugin](https://plugins.jetbrains.com/plugin/23890-comparemaster) for JSON processing and comparison.
+### [Jet Brains IDE plugin](https://plugins.jetbrains.com/plugin/23890-comparemaster) for JSON and XML processing and comparison.
 
 #### Compatible with:
 
@@ -34,7 +34,7 @@
 Plugin is constructed as a tool window with 2 editors. 
 
 Editors implemented from Intellij-based components, so usual 'search', 'replace',
-or any other actions and shortcuts applied to IDEA editors, as well as JSON syntax check, will also work with plugin editors.
+or any other actions and shortcuts applied to IDEA editors, as well as JSON, XML syntax check, will also work with plugin editors.
 
 ![](src/main/resources/screenshots/img.png) 
 
