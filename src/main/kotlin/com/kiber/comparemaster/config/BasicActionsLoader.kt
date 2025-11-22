@@ -46,13 +46,13 @@ object BasicActionsLoader : ActionsLoader {
         )
 
 
-        val formatJsonFunction = FilePairAction(
+        val formatFunction = FilePairAction(
             hint = "Format",
             icon = IconManager.formatText,
             function = FilePairFuncWrapper(FormatJsonFunction, FormatXmlFunction),
         )
 
-        val inlineJsonFunction = FilePairAction(
+        val inlineFunction = FilePairAction(
             hint = "Inline",
             icon = IconManager.inlineText,
             function = FilePairFuncWrapper(InlineJsonFunction, InlineXmlFunction),
@@ -60,7 +60,7 @@ object BasicActionsLoader : ActionsLoader {
 
         val replaceOnlyValuesAction = FilePairAction(
             hint = "Replace field values from left to right",
-            icon = null,
+            icon = IconManager.replaceOnlyValues,
             function = FilePairFuncWrapper(
                 JsonReplaceOnlyPresentValuesFunction(),
                 XmlReplaceOnlyPresentValuesFunction()
@@ -69,20 +69,32 @@ object BasicActionsLoader : ActionsLoader {
 
         val addAbsentValuesAction = FilePairAction(
             hint = "Add absent values from left to right",
-            icon = null,
+            icon = IconManager.addAbsentValues,
             function = FilePairFuncWrapper(JsonAddAbsentFieldsFunction(), XmlAddAbsentFieldsFunction())
         )
 
-        val popupAction = PopupAction(
-            hint = "Replace",
-            icon = IconManager.replaceOnlyValues,
-            actions = listOf(replaceOnlyValuesAction, addAbsentValuesAction)
+        val escapeFunction = FilePairAction(
+            hint = "Escape",
+            icon = IconManager.escape,
+            function = FilePairFuncWrapper(EscapeJsonFunction, FormatXmlFunction),
+        )
+
+        val unescapeFunction = FilePairAction(
+            hint = "Unescape",
+            icon = IconManager.unescape,
+            function = FilePairFuncWrapper(UnescapeJsonFunction, FormatXmlFunction),
+        )
+
+        val editPopupAction = PopupAction(
+            hint = "Edit",
+            icon = IconManager.modify,
+            actions = listOf(escapeFunction, unescapeFunction, replaceOnlyValuesAction, addAbsentValuesAction)
         )
 
         val showDiffAction = ShowDiffAction()
 
-        SideMenuManager.add(clearAction, copyAction, swapAction, sortAction, formatJsonFunction, inlineJsonFunction)
-        SideMenuManager.add(popupAction)
+        SideMenuManager.add(clearAction, copyAction, swapAction, sortAction, formatFunction, inlineFunction)
+        SideMenuManager.add(editPopupAction)
         SideMenuManager.add(showDiffAction)
     }
 }
