@@ -45,7 +45,6 @@ object BasicActionsLoader : ActionsLoader {
             function = FilePairFuncWrapper(SortJsonFunction, SortXmlFunction)
         )
 
-
         val formatFunction = FilePairAction(
             hint = "Format",
             icon = IconManager.formatText,
@@ -76,13 +75,13 @@ object BasicActionsLoader : ActionsLoader {
         val escapeFunction = FilePairAction(
             hint = "Escape",
             icon = IconManager.escape,
-            function = FilePairFuncWrapper(EscapeJsonFunction, FormatXmlFunction),
+            function = FilePairFuncWrapper(EscapeJsonFunction, EscapeXmlFunction),
         )
 
         val unescapeFunction = FilePairAction(
             hint = "Unescape",
             icon = IconManager.unescape,
-            function = FilePairFuncWrapper(UnescapeJsonFunction, FormatXmlFunction),
+            function = FilePairFuncWrapper(UnescapeJsonFunction, UnescapeXmlFunction),
         )
 
         val editPopupAction = PopupAction(
