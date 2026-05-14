@@ -1,0 +1,5 @@
+<ns:root xmlns:ns="http://example.com/ns" xmlns:x="http://example.com/x">
+  <x:item x:id="2">two</x:item>
+  <x:item x:id="1">one</x:item>
+  <ns:child>value</ns:child>
+</ns:root>

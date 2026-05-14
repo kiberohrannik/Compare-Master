@@ -1,0 +1,4 @@
+<root>
+  <script><![CDATA[if (a < b && c > d) { return "ok"; }]]></script>
+  <text>Some plain text</text>
+</root>

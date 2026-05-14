@@ -1,0 +1,10 @@
+<catalog>
+  <zeta>last</zeta>
+  <alpha>first</alpha>
+  <items>
+    <item id="3">Gamma</item>
+    <item id="1">Alpha</item>
+    <item id="2">Beta</item>
+  </items>
+  <beta>second</beta>
+</catalog>
