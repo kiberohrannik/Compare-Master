@@ -1,0 +1,12 @@
+{
+  "env": "prod",
+  "numbers": [1, 2, 3, 4],
+  "users": [
+    {"id": 1, "name": "Ann"},
+    {"id": 2, "name": "Ben"},
+    {"id": 3, "name": "Cid"}
+  ],
+  "flags": {
+    "a": true
+  }
+}

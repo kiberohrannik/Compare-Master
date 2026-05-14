@@ -1,0 +1,7 @@
+{
+  "message": "Hello \"CompareMaster\"",
+  "path": "C:\\temp\\demo",
+  "url": "https://example.com/a?b=1&c=2",
+  "unicode": "Привіт / こんにちは / مرحبا",
+  "multiline": "first line\nsecond line"
+}
