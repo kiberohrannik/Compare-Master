@@ -16,13 +16,26 @@ class PopupAction(
     private val actions: List<FilePairAction> = listOf()
 ) : PluginAction(hint, description, icon) {
 
+    override fun update(event: AnActionEvent) {
+        val fileType = event.project?.let { project ->
+            runCatching { ComponentsResolver.getToolWindowPanel(project).editorFiles.file1.eType }.getOrNull()
+        }
+
+        event.presentation.isEnabled = fileType?.let { type -> actions.any { it.supports(type) } } == true
+    }
+
     override fun actionPerformed(event: AnActionEvent) {
         val toolWindowPanel = ComponentsResolver.getToolWindowPanel(getProject(event))
+        val fileType = toolWindowPanel.editorFiles.file1.eType
 
         val group = RunToolbarMoreActionGroup()
-        actions.forEach {
+        actions.filter { it.supports(fileType) }.forEach {
             group.add(it)
             group.addSeparator()
+        }
+
+        if (group.getChildrenCount() == 0) {
+            return
         }
 
         val popupMenu = ActionManager.getInstance()

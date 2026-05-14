@@ -7,6 +7,7 @@ import com.kiber.comparemaster.action.ShowDiffAction
 import com.kiber.comparemaster.function.ClearContentFunction
 import com.kiber.comparemaster.function.CopyContentFunction
 import com.kiber.comparemaster.function.FilePairFuncWrapper
+import com.kiber.comparemaster.function.FormatAnyFunction
 import com.kiber.comparemaster.function.SwapFilesFunction
 import com.kiber.comparemaster.function.json.*
 import com.kiber.comparemaster.function.xml.*
@@ -48,7 +49,7 @@ object BasicActionsLoader : ActionsLoader {
         val formatFunction = FilePairAction(
             hint = "Format",
             icon = IconManager.formatText,
-            function = FilePairFuncWrapper(FormatJsonFunction, FormatXmlFunction),
+            function = FilePairFuncWrapper(FormatJsonFunction, FormatXmlFunction, FormatAnyFunction),
         )
 
         val inlineFunction = FilePairAction(
