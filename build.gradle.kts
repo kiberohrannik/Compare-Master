@@ -7,10 +7,11 @@ plugins {
 }
 
 group = "com.kiber"
-version = "2.1.0"
+version = "2.2.1"
 
 val jsonPatchVersion = "0.4.16"
 val jsonLibVersion = "20231013"
+val xmlUnitVersion = "2.11.0"
 val kotestVersion = "5.8.0"
 val kotlinVersion = "1.9.21"
 val apacheCommonsVersion = "1.14.0"
@@ -46,6 +47,7 @@ dependencies {
     //JSON
     implementation("com.flipkart.zjsonpatch:zjsonpatch:$jsonPatchVersion")
     implementation("org.json:json:$jsonLibVersion")
+    implementation("org.xmlunit:xmlunit-core:$xmlUnitVersion")
     implementation("org.apache.commons:commons-text:$apacheCommonsVersion")
 
     compileOnly("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
@@ -70,7 +72,7 @@ tasks {
 
     patchPluginXml {
         sinceBuild.set("231")
-        untilBuild.set("253.*")
+        untilBuild.set("262.*")
     }
 
     signPlugin {

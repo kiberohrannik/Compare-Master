@@ -3,6 +3,7 @@ package com.kiber.comparemaster.content.file
 import com.intellij.ide.highlighter.XmlFileType
 import com.intellij.json.JsonFileType
 import com.intellij.openapi.command.WriteCommandAction
+import com.intellij.openapi.fileTypes.PlainTextFileType
 import com.intellij.openapi.progress.ProgressManager
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiDocumentManager
@@ -23,6 +24,11 @@ object DefaultEditorsFileManager : EditorsFileManager {
         val file2: EVirtualFile
 
         when (fileType) {
+            EFileTypes.ANY -> {
+                file1 = AnyEVirtualFile(file1Name)
+                file2 = AnyEVirtualFile(file2Name)
+            }
+
             EFileTypes.JSON -> {
                 file1 = JsonEVirtualFile(file1Name)
                 file2 = JsonEVirtualFile(file2Name)
@@ -58,6 +64,7 @@ object DefaultEditorsFileManager : EditorsFileManager {
             val oldName2 = filePairMap[prefix]?.right()!!.name
 
             val type = when (newType) {
+                EFileTypes.ANY -> PlainTextFileType.INSTANCE
                 EFileTypes.JSON -> JsonFileType.INSTANCE
                 EFileTypes.XML -> XmlFileType.INSTANCE
             }

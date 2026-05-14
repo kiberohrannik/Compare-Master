@@ -1,0 +1,6 @@
+<entries>
+  <entry code="B" type="x">bbb</entry>
+  <entry code="A" type="z">aaa</entry>
+  <entry type="a" code="C">ccc</entry>
+  <entry>no-attrs</entry>
+</entries>

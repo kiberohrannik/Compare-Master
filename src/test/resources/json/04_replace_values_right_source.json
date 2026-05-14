@@ -1,0 +1,15 @@
+{
+  "id": "OLD-999",
+  "profile": {
+    "name": "Bob",
+    "age": 22,
+    "status": "inactive",
+    "extra": "keep_me"
+  },
+  "tags": ["red", "yellow"],
+  "list": [
+    {"key": "a", "value": 0},
+    {"key": "c", "value": 3}
+  ],
+  "rightOnly": "must_stay"
+}

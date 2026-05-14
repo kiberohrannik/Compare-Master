@@ -1,0 +1,14 @@
+{
+  "id": "A-100",
+  "profile": {
+    "name": "Alice",
+    "age": 30,
+    "status": "active"
+  },
+  "tags": ["red", "green", "blue"],
+  "list": [
+    {"key": "a", "value": 1},
+    {"key": "b", "value": 2}
+  ],
+  "leftOnly": "should_not_copy_to_right"
+}

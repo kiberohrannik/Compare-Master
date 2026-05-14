@@ -5,6 +5,7 @@ import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowFactory
 import com.intellij.openapi.wm.ex.ToolWindowEx
 import com.kiber.comparemaster.action.CreateNewTabAction
+import com.kiber.comparemaster.action.filetypes.AnyFileTypeAction
 import com.kiber.comparemaster.action.filetypes.JsonFileTypeAction
 import com.kiber.comparemaster.action.filetypes.XmlFileTypeAction
 import com.kiber.comparemaster.config.PluginConfigurationProcessor
@@ -32,6 +33,7 @@ class EditorsToolWindowFactory: ToolWindowFactory {
 
 
         toolWindow.setTitleActions(mutableListOf(
+            AnyFileTypeAction(toolWindow),
             XmlFileTypeAction(toolWindow),
             JsonFileTypeAction(toolWindow)
         ))

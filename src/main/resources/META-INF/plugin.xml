@@ -2,23 +2,26 @@
 <idea-plugin>
     <id>com.kiber.CompareMaster</id>
     <name>CompareMaster</name>
-    <version>2.0.3</version>
+    <version>2.2.1</version>
 
     <vendor email="kiberdevv@gmail.com">Victoria Kulyk</vendor>
 
     <description> <![CDATA[
-Tool window with 2 editors for JSON and XML processing and comparison.
-<br>Helps to format, compare, replace, sort and show differences in given JSON, XML files.
+Tool window with 2 editors for fast text comparison and transformation.
+<br>Supports JSON and XML workflows (format, sort, replace values, add missing values, escape/unescape, diff).
+<br>Also includes an "Any" mode for generic text formats with syntax highlighting and quick file-type selection.
 ]]>
     </description>
 
     <change-notes><![CDATA[
-<h2>New Features</h2>
+<h2>What’s New</h2>
 <ul>
-  <li>Added support of the latest IDE version (252)
-  </li>
+  <li>XML now supports value replacement and adding missing values (same workflow as JSON).</li>
+  <li>New <b>Any</b> mode for general text files and quick syntax highlighting.</li>
+  <li>Type selection in Any mode is now faster: start typing and choose from autocomplete suggestions.</li>
+  <li>Any mode now supports formatting.</li>
+  <li>Improved type picker UX: compact one-line input, auto-focus, and remembered last selection during the session.</li>
 </ul>
-
 ]]></change-notes>
 
     <depends>com.intellij.modules.platform</depends>
