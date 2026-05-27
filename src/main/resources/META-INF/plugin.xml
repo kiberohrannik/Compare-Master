@@ -2,7 +2,7 @@
 <idea-plugin>
     <id>com.kiber.CompareMaster</id>
     <name>CompareMaster</name>
-    <version>2.2.1</version>
+    <version>2.2.2</version>
 
     <vendor email="kiberdevv@gmail.com">Victoria Kulyk</vendor>
 
@@ -16,6 +16,7 @@ Tool window with 2 editors for fast text comparison and transformation.
     <change-notes><![CDATA[
 <h2>What’s New</h2>
 <ul>
+  <li>Fixed XML formatter compatibility with IntelliJ IDEA 2026.2 by removing the Groovy-based XML parser/serializer dependency.</li>
   <li>XML now supports value replacement and adding missing values (same workflow as JSON).</li>
   <li>New <b>Any</b> mode for general text files and quick syntax highlighting.</li>
   <li>Type selection in Any mode is now faster: start typing and choose from autocomplete suggestions.</li>

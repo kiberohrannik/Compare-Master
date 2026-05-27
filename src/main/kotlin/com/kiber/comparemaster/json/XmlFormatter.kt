@@ -1,76 +1,53 @@
 package com.kiber.comparemaster.json
 
-import com.jetbrains.rd.util.first
-import groovy.util.Node
-import groovy.util.NodeList
-import groovy.xml.XmlParser
-import groovy.xml.XmlUtil
+import org.w3c.dom.Document
+import org.w3c.dom.Element
+import org.w3c.dom.Node
+import java.io.StringWriter
+import java.nio.charset.StandardCharsets
+import javax.xml.XMLConstants
+import javax.xml.parsers.DocumentBuilderFactory
+import javax.xml.transform.OutputKeys
+import javax.xml.transform.TransformerFactory
+import javax.xml.transform.dom.DOMSource
+import javax.xml.transform.stream.StreamResult
 
 object XmlFormatter {
 
-    //TODO add support for <!DOCTYPE
-    private val parser = XmlParser(false, false)
-
     fun toPrettyXml(xml: String): String {
         validateXmlType(xml)
-        return if (xml.isBlank()) xml else prettyPrint(parser.parseText(xml))
+        if (xml.isBlank()) {
+            return xml
+        }
+
+        val document = parseXml(xml)
+        stripFormattingWhitespace(document.documentElement)
+        return serialize(document, pretty = true)
     }
 
     fun toRawXml(xml: String): String {
         validateXmlType(xml)
-        return if (xml.isBlank()) xml else rawPrint(parser.parseText(xml))
+        if (xml.isBlank()) {
+            return xml
+        }
+
+        val document = parseXml(xml)
+        stripFormattingWhitespace(document.documentElement)
+        return serialize(document, pretty = false)
+            .replace(Regex("\\r?\\n\\s*"), "")
+            .replace(Regex(">\\s+<"), "><")
     }
 
     fun toSortedXml(xml: String): String {
         validateXmlType(xml)
-        return if (xml.isBlank()) {
-            xml
-        } else {
-            val parsed = parser.parseText(xml)
-
-            sortChildren(parsed)
-
-            return prettyPrint(parsed)
-        }
-    }
-
-    private fun sortChildren(node: Node) {
-        node.children()
-            .sortedBy { sortByName(it) }
-            .forEach { child ->
-                if (child is Node) {
-                    sortChildren(child)
-                }
-            }
-
-        // Sort the current node's children and update the node
-
-        val groupedByTag = node.children()
-            //Group by tag name and sort
-            .groupBy { groupByName(it) }
-            .toSortedMap()
-
-        val withSortedAttrs = groupedByTag.map { entry ->
-            entry.key to entry.value
-
-                //Group by attribute name and sort (when have same tag name)
-                .groupBy { groupByAttribute(it) }
-                .toSortedMap()
-
-                //Sort by attribute value (when have same attribute name)
-                .flatMap { attrEntry ->
-                    attrEntry.value.sortedBy { child ->
-                        sortByAttribute(child)
-                    }
-                }
+        if (xml.isBlank()) {
+            return xml
         }
 
-        val sortedChildren = withSortedAttrs.flatMap { entry ->
-            entry.second.sortedBy { sortByTagValue(it) }
-        }
-
-        node.children().clear()
-        node.children().addAll(sortedChildren)
+        val document = parseXml(xml)
+        stripFormattingWhitespace(document.documentElement)
+        sortElementChildren(document.documentElement)
+        return serialize(document, pretty = true)
     }
 
     private fun validateXmlType(xml: String) {
@@ -79,53 +56,107 @@ object XmlFormatter {
         }
     }
 
-    private fun prettyPrint(parsed: Node) = XmlUtil.serialize(parsed)
-        .replace(Regex("\\n\\s*\\n"), "\n")
-        .replace("?>", "?>\n")
-
-    private fun rawPrint(parsed: Node) = XmlUtil.serialize(parsed)
-        .replace(Regex("\\n\\s*\\n"), "")
-        .replace(Regex(">\\s*<"), "><")
-
-
-    private fun sortByName(value: Any?): String =
-        if (value is Node) {
-            value.name() as String
-        } else {
-            ""
+    private fun parseXml(xml: String): Document {
+        val factory = DocumentBuilderFactory.newInstance().apply {
+            isNamespaceAware = true
+            setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true)
+            setFeature("http://apache.org/xml/features/disallow-doctype-decl", true)
+            setFeature("http://xml.org/sax/features/external-general-entities", false)
+            setFeature("http://xml.org/sax/features/external-parameter-entities", false)
+            setExpandEntityReferences(false)
         }
 
-    private fun sortByAttribute(value: Any?): String =
-        if (value is Node) {
-            value.attributes().first().value as String
-        } else {
-            value.hashCode().toString()
-        }
-
-    private fun sortByTagValue(value: Any?): String {
-        var value4Sorting = ""
-        //If tag has no attributes, we sort by tag value
-        if (value is Node && value.attributes().isEmpty() && value.value() is NodeList) {
-            val nodeList = (value.value() as NodeList)
-            if (nodeList.isNotEmpty()) {
-                value4Sorting = nodeList.first() as String
-            }
-        }
-        return value4Sorting
+        val builder = factory.newDocumentBuilder()
+        return builder.parse(xml.byteInputStream(StandardCharsets.UTF_8))
+            .also { it.documentElement.normalize() }
     }
 
+    private fun sortElementChildren(element: Element) {
+        val children = mutableListOf<Element>()
+        var canSort = true
 
-    private fun groupByName(value: Any?): String =
-        if (value is Node) {
-            value.name() as String
-        } else {
-            value.hashCode().toString()
+        var child = element.firstChild
+        while (child != null) {
+            if (child is Element) {
+                sortElementChildren(child)
+                children.add(child)
+            } else if (!isIgnorableWhitespace(child)) {
+                canSort = false
+            }
+            child = child.nextSibling
         }
 
-    private fun groupByAttribute(value: Any?): String =
-        if (value is Node && value.attributes().isNotEmpty()) {
-            value.attributes().first().key as String
-        } else {
-            value.hashCode().toString()
+        if (!canSort || children.size <= 1) {
+            return
         }
+
+        val sortedChildren = children.sortedWith(elementComparator)
+
+        while (element.firstChild != null) {
+            element.removeChild(element.firstChild)
+        }
+
+        sortedChildren.forEach { element.appendChild(it) }
+    }
+
+    private fun stripFormattingWhitespace(node: Node) {
+        var child = node.firstChild
+        while (child != null) {
+            val next = child.nextSibling
+            when {
+                child is Element -> stripFormattingWhitespace(child)
+                child.nodeType == Node.TEXT_NODE && child.textContent.isBlank() -> node.removeChild(child)
+            }
+            child = next
+        }
+    }
+
+    private val elementComparator = compareBy<Element>(
+        { it.tagName },
+        { attributeSignature(it) },
+        { leafTextValue(it) },
+    )
+
+    private fun attributeSignature(element: Element): String {
+        val attributes = element.attributes ?: return ""
+        if (attributes.length == 0) {
+            return ""
+        }
+
+        return (0 until attributes.length)
+            .mapNotNull { index -> attributes.item(index) }
+            .map { attr -> attr.nodeName to (attr.nodeValue ?: "") }
+            .sortedWith(compareBy<Pair<String, String>>({ it.first }, { it.second }))
+            .joinToString(separator = "|") { (name, value) -> "$name=$value" }
+    }
+
+    private fun leafTextValue(element: Element): String {
+        if (element.childNodes.length == 1 && element.firstChild?.nodeType == Node.TEXT_NODE) {
+            return element.textContent.trim()
+        }
+
+        return ""
+    }
+
+    private fun isIgnorableWhitespace(node: Node): Boolean =
+        node.nodeType == Node.TEXT_NODE && node.textContent.isBlank()
+
+    private fun serialize(document: Document, pretty: Boolean): String {
+        val transformer = TransformerFactory.newInstance().newTransformer().apply {
+            setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no")
+            setOutputProperty(OutputKeys.ENCODING, "UTF-8")
+            setOutputProperty(OutputKeys.METHOD, "xml")
+            setOutputProperty(OutputKeys.INDENT, if (pretty) "yes" else "no")
+        }
+
+        if (pretty) {
+            runCatching {
+                transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2")
+            }
+        }
+
+        val writer = StringWriter()
+        transformer.transform(DOMSource(document), StreamResult(writer))
+        return writer.toString()
+    }
 }
